@@ -1,0 +1,173 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: q a, b, LIC=LJWII-TSHRJ-HQJ0I-THHNP-VNY0R-ZPAX9
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.24.1
+Toolchain Path:  D:\Programms\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DCM.DLL V1.16.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TCM.DLL V1.32.0.0
+ 
+<h2>Project:</h2>
+D:\Aproj\STM32F429_TERMINAL\STM32F429_TERMINAL.uvprojx
+Project File Date:  11/22/2019
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Programms\ARM\ARMCC\Bin'
+Rebuild target 'Target'
+compiling main.c...
+main.c(19): warning:  #111-D: statement is unreachable
+  	return 0;
+main.c: 1 warning, 0 errors
+compiling LED_F429Discovery.c...
+compiling usart_IO.c...
+usart_IO.c(11): warning:  #177-D: variable "GPIO_InitStruct"  was declared but never referenced
+    GPIO_InitTypeDef GPIO_InitStruct;
+usart_IO.c(90): warning:  #940-D: missing return statement at end of non-void function "uart_send" 
+  }
+usart_IO.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_adc_ex.c...
+compiling stm32f4xx_hal_adc.c...
+compiling stm32f4xx_hal_dac_ex.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal_dac.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_tim_ex.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+assembling startup_stm32f429xx.s...
+compiling stm32f4xx_hal_tim.c...
+compiling system_stm32f4xx.c...
+compiling stm32f4xx_hal_usart.c...
+linking...
+Program Size: Code=2530 RO-data=494 RW-data=16 ZI-data=3824  
+".\Objects\STM32F429_TERMINAL.axf" - 0 Error(s), 3 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.6.0.pack
+                ARM.CMSIS.5.6.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.3.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.MDK-Middleware.7.9.0.pack
+                Keil.MDK-Middleware.7.9.0
+                Middleware for Keil MDK-Professional and MDK-Plus
+   * Component: LED Version: 1.0.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.14.0.pack
+                Keil.STM32F4xx_DFP.2.14.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+   * Component: Startup Version: 2.6.3
+   * Component: USART Version: 1.7.6
+   * Component: TIM Version: 1.7.6
+   * Component: RCC Version: 1.7.6
+   * Component: PWR Version: 1.7.6
+   * Component: GPIO Version: 1.7.6
+   * Component: DMA Version: 1.7.6
+   * Component: DAC Version: 1.7.6
+   * Component: Cortex Version: 1.7.6
+   * Component: Common Version: 1.7.6
+   * Component: ADC Version: 1.7.6
+   * Component: Classic Version: 1.7.6
+   * Component: LED Version: 1.0.0
+   * Component: STM32Cube Framework Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\Device\STM32F429ZITx
+  .\RTE\_Target
+  D:\Programms\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include
+  D:\Programms\ARM\PACK\Keil\MDK-Middleware\7.9.0\Board
+  D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: Keil::Device:Startup:2.6.3
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
+      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429xx.s
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
+
+   * Component: Keil::Device:STM32Cube HAL:USART:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_usart.c
+
+   * Component: Keil::Device:STM32Cube HAL:TIM:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c
+
+   * Component: Keil::Device:STM32Cube HAL:RCC:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc_ex.c
+
+   * Component: Keil::Device:STM32Cube HAL:PWR:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr.c
+
+   * Component: Keil::Device:STM32Cube HAL:GPIO:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c
+
+   * Component: Keil::Device:STM32Cube HAL:DMA:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
+
+   * Component: Keil::Device:STM32Cube HAL:DAC:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac.c
+
+   * Component: Keil::Device:STM32Cube HAL:Cortex:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.c
+
+   * Component: Keil::Device:STM32Cube HAL:Common:1.7.6
+      Include file:  Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c
+
+   * Component: Keil::Device:STM32Cube HAL:ADC:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc.c
+
+   * Component: Keil::Device:STM32Cube Framework:Classic:1.7.6
+      Source file:   MDK\Templates\Src\stm32f4xx_hal_msp.c
+      Include file:  MDK\Templates\Inc\stm32f4xx_it.h
+      Include file:  CMSIS\Driver\Config\RTE_Device.h
+      Include file:  MDK\Templates\Inc\stm32f4xx_hal_conf.h
+      Source file:   MDK\Templates\Src\stm32f4xx_it.c
+      Source file:   MDK\Templates\Src\main.c
+      Include file:  MDK\Templates_LL\Inc\main.h
+      Source file:   MDK\Templates_LL\Src\main.c
+      Include file:  MDK\Templates\Inc\main.h
+
+   * Component: Keil.STM32F429I-Discovery::Board Support:LED:1.0.0
+      Source file:   MDK\Boards\ST\STM32F429I-Discovery\Common\LED_F429Discovery.c
+
+   * Component: ARM::CMSIS:CORE:5.3.0
+
+   * Component: ::Device:STM32Cube Framework:1.0.0 (API)
+
+   * Component: ::Board Support:LED:1.0.0 (API)
+      Include file:  Board\Board_LED.h
+Build Time Elapsed:  00:01:29
+</pre>
+</body>
+</html>
