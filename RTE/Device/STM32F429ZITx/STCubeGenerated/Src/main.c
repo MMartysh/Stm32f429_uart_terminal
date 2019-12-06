@@ -26,13 +26,15 @@
 //UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
-
+extern UART_HandleTypeDef huart1;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
-void MX_USART1_UART_Init(void);
+//void MX_USART1_UART_Init(void);
+
+
 
 /**
   * @brief  The application entry point.
@@ -43,27 +45,21 @@ char getDate[30];
 
 int main(void)
 {
- 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* Configure the system clock */
   SystemClock_Config();
-
-  /* Initialize all configured peripherals */
+	MX_USART1_UART_Init();
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	char Date[30]="Hello\r\t";
-
 	//HAL_UART_Receive_DMA(&huart1,(uint8_t*)getDate, 10);
- 
   while (1)
   {
-		//HAL_UART_Transmit(&huart1, (uint8_t*)Date, strlen(Date),10);
-		HAL_UART_Receive_DMA(&huart1,(uint8_t*)getDate, 10);
-		HAL_Delay(500);
+		HAL_UART_Transmit(&huart1, (uint8_t*)Date, strlen(Date),10);
+		HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
+		HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
+		//HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
