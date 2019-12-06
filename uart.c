@@ -1,7 +1,7 @@
 #include "main.h"
-#include "uart.h"
 
 UART_HandleTypeDef huart1;
+
 
 void MX_USART1_UART_Init(void)
 {

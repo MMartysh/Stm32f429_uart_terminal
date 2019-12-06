@@ -21,39 +21,50 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.6.0
 Dialog DLL:      TCM.DLL V1.36.2.0
  
 <h2>Project:</h2>
-C:\Users\Dell\Downloads\UART\uart.uvprojx
-Project File Date:  12/04/2019
+D:\simens\MainProject\Stm32f429_uart_terminal\uart.uvprojx
+Project File Date:  12/06/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5.1\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
-compiling retarget_io.c...
+compiling gpio.c...
+gpio.c(8): warning:  #1-D: last line of file ends without a newline
+  }
+gpio.c: 1 warning, 0 errors
 compiling main.c...
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(65): error:  #20: identifier "huart1" is undefined
-  		HAL_UART_Receive_DMA(&huart1,(uint8_t*)getDate, 10);
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(58): warning:  #177-D: variable "Date"  was declared but never referenced
-  	char Date[30]="Hello\r\t";
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(168): error:  #20: identifier "huart1" is undefined
-  	HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 1 warning, 2 errors
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\uart.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\gpio.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\rcc.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 3 warnings, 0 errors
+compiling retarget_io.c...
+compiling rcc.c...
+compiling dma.c...
+dma.c(20): warning:  #1-D: last line of file ends without a newline
+  }
+dma.c: 1 warning, 0 errors
 compiling stm32f4xx_it.c...
+compiling USART_STM32F4xx.c...
 compiling uart.c...
 compiling stm32f4xx_hal.c...
 compiling stm32f4xx_hal_dma.c...
-compiling stm32f4xx_hal_cortex.c...
-compiling USART_STM32F4xx.c...
-compiling stm32f4xx_hal_gpio.c...
 compiling stm32f4xx_hal_pwr_ex.c...
-compiling stm32f4xx_hal_pwr.c...
 compiling stm32f4xx_hal_dma_ex.c...
-compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal_pwr.c...
 assembling startup_stm32f429xx.s...
-compiling stm32f4xx_hal_uart.c...
-compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_gpio.c...
 compiling system_stm32f4xx.c...
 compiling stm32f4xx_hal_usart.c...
+compiling stm32f4xx_hal_rcc_ex.c...
 compiling stm32f4xx_hal_msp.c...
-".\Objects\uart.axf" - 2 Error(s), 1 Warning(s).
+compiling stm32f4xx_hal_uart.c...
+compiling stm32f4xx_hal_rcc.c...
+linking...
+Program Size: Code=13620 RO-data=684 RW-data=16 ZI-data=1976  
+".\Objects\uart.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -143,19 +154,19 @@ Package Vendor: Keil
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.c
 
    * Component: Keil::Device:STM32Cube HAL:DMA:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:GPIO:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c
 
    * Component: Keil::Device:STM32Cube HAL:PWR:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:RCC:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c
 
    * Component: Keil::Device:STM32Cube HAL:UART:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c
@@ -164,13 +175,12 @@ Package Vendor: Keil
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_usart.c
 
    * Component: Keil::Device:Startup:2.6.3
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429xx.s
-      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
-      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Target not created.
-Build Time Elapsed:  00:01:26
+Build Time Elapsed:  00:00:28
 </pre>
 </body>
 </html>
