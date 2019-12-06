@@ -1,5 +1,8 @@
 --cpu=Cortex-M4.fp
 ".\objects\uart.o"
+".\objects\dma.o"
+".\objects\gpio.o"
+".\objects\rcc.o"
 ".\objects\main.o"
 ".\objects\stm32f4xx_it.o"
 "C:\Users\Dell\AppData\Local\Arm\Packs\Clarinox\Wireless\2.0.1\Examples\Build\uCos_III\Projects\Clarinox_Koala_V2.0\Keil\Lib\Clarinox_Koala_V20R.lib"

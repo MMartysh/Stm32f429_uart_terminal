@@ -226,6 +226,12 @@ void DMA2_Stream7_IRQHandler(void)
   /* USER CODE END DMA2_Stream7_IRQn 1 */
 }
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  UNUSED(huart);
+	//HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
+}
+
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
