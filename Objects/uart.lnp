@@ -3,6 +3,7 @@
 ".\objects\dma.o"
 ".\objects\gpio.o"
 ".\objects\rcc.o"
+".\objects\pwm.o"
 ".\objects\main.o"
 ".\objects\stm32f4xx_it.o"
 "C:\Users\Dell\AppData\Local\Arm\Packs\Clarinox\Wireless\2.0.1\Examples\Build\uCos_III\Projects\Clarinox_Koala_V2.0\Keil\Lib\Clarinox_Koala_V20R.lib"
@@ -22,6 +23,8 @@
 ".\objects\stm32f4xx_hal_msp.o"
 ".\objects\startup_stm32f429xx.o"
 ".\objects\system_stm32f4xx.o"
+".\objects\stm32f4xx_hal_tim.o"
+".\objects\stm32f4xx_hal_tim_ex.o"
 --strict --scatter ".\Objects\uart.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

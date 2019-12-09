@@ -1,4 +1,4 @@
-.\objects\stm32f4xx_hal_msp.o: D:\simens\MainProject\Stm32f429_uart_terminal\RTE\Device\STM32F429ZITx\STCubeGenerated\Src\stm32f4xx_hal_msp.c
+.\objects\stm32f4xx_hal_msp.o: D:\siemens\MainProject\Stm32f429_uart_terminal\RTE\Device\STM32F429ZITx\STCubeGenerated\Src\stm32f4xx_hal_msp.c
 .\objects\stm32f4xx_hal_msp.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
 .\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\stm32f4xx_hal_msp.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
@@ -27,4 +27,6 @@
 .\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h
 .\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 .\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
+.\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
+.\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\stm32f4xx_hal_msp.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h

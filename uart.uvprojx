@@ -422,6 +422,16 @@
               <FileType>5</FileType>
               <FilePath>.\rcc.h</FilePath>
             </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\pwm.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -547,6 +557,12 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="RCC" Cvendor="Keil" Cversion="1.7.6" condition="STM32F4 HAL GPIO">
+        <package name="STM32F4xx_DFP" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="2.14.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="TIM" Cvendor="Keil" Cversion="1.7.6" condition="STM32F4 HAL DMA">
         <package name="STM32F4xx_DFP" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="2.14.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
