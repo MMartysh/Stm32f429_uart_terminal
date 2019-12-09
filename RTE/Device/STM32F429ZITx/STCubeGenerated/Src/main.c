@@ -4,10 +4,13 @@
 #include "dma.h"
 #include "gpio.h"
 #include "rcc.h"
+#include "pwm.h"
 
+extern TIM_HandleTypeDef htim1;
+
+extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
-extern UART_HandleTypeDef huart1;
 
 	
 char getDate[30];
@@ -17,18 +20,24 @@ int main(void)
   HAL_Init();
 
   SystemClock_Config();
-	MX_USART1_UART_Init();
+
   MX_GPIO_Init();
   MX_DMA_Init();
+  MX_USART1_UART_Init();
+  MX_TIM1_Init();
+	runTimer();
 	char Date[30]="Hello\r\t";
+  
   while (1)
   {
-		HAL_UART_Transmit(&huart1, (uint8_t*)Date, strlen(Date),10);
-		HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
-		HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
-  }
-}
+   HAL_UART_Transmit(&huart1, (uint8_t*)Date, strlen(Date),10);
+	HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
+	HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
 
+    
+  }
+
+}
 
 void Error_Handler(void)
 {
@@ -50,5 +59,6 @@ void assert_failed(uint8_t *file, uint32_t line)
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
-#endif
+#endif /* USE_FULL_ASSERT */
+
 
