@@ -5,9 +5,12 @@
 #include "gpio.h"
 #include "rcc.h"
 #include "pwm.h"
+#include "adc.h"
+#include "dac.h"
 
 extern TIM_HandleTypeDef htim1;
-
+extern DAC_HandleTypeDef hdac;
+extern ADC_HandleTypeDef hadc1;
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
@@ -25,6 +28,8 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_TIM1_Init();
+	MX_ADC1_Init();
+	MX_DAC_Init();
 	runTimer();
 	char Date[30]="Hello\r\t";
   
@@ -60,5 +65,3 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-

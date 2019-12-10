@@ -35,10 +35,14 @@
         #define RTE_Drivers_USART10             /* Driver USART10 */
 /*  Keil::Device:STM32Cube Framework:STM32CubeMX:1.1.0 */
 #define RTE_DEVICE_FRAMEWORK_CUBE_MX
+/*  Keil::Device:STM32Cube HAL:ADC:1.7.6 */
+#define RTE_DEVICE_HAL_ADC
 /*  Keil::Device:STM32Cube HAL:Common:1.7.6 */
 #define RTE_DEVICE_HAL_COMMON
 /*  Keil::Device:STM32Cube HAL:Cortex:1.7.6 */
 #define RTE_DEVICE_HAL_CORTEX
+/*  Keil::Device:STM32Cube HAL:DAC:1.7.6 */
+#define RTE_DEVICE_HAL_DAC
 /*  Keil::Device:STM32Cube HAL:DMA:1.7.6 */
 #define RTE_DEVICE_HAL_DMA
 /*  Keil::Device:STM32Cube HAL:GPIO:1.7.6 */
