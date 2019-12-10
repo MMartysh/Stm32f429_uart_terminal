@@ -18,3 +18,14 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
 }
+
+HAL_StatusTypeDef uartTransmit(uint8_t *data,uint16_t size, uint32_t timeout)
+{
+	return HAL_UART_Transmit(&huart1, data, size,timeout);
+}
+HAL_StatusTypeDef uartReceive(uint8_t *data,uint16_t size, uint32_t timeout)
+{
+	return HAL_UART_Receive(&huart1, data, size,timeout);
+}
+
+
