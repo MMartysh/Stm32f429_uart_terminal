@@ -1,6 +1,4 @@
-#define USE_HAL_DRIVER
 #include "main.h"
-#include "stm32f4xx_hal.h"
 
 TIM_HandleTypeDef htim1;
 void MX_TIM1_Init(void)
@@ -62,6 +60,15 @@ void MX_TIM1_Init(void)
 
 }
 
-void runTimer(void){
+void startPWM(void)
+{
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 }
+
+void stopPWM(void)
+{
+	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+}
+
+
+
