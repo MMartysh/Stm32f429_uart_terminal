@@ -30,14 +30,14 @@ int main(void)
   MX_TIM1_Init();
 	MX_ADC1_Init();
 	MX_DAC_Init();
-	runTimer();
+	startPWM();
 	char Date[30]="Hello\r\t";
   
   while (1)
   {
-   HAL_UART_Transmit(&huart1, (uint8_t*)Date, strlen(Date),10);
-	HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
-	HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
+    uartTransmit((uint8_t*)Date, strlen(Date),10);
+		HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
+	  HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
 
     
   }

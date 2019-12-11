@@ -13,7 +13,6 @@
 .\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
 .\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
-.\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
 .\objects\pwm.o: C:\Keil_v5.1\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\pwm.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
