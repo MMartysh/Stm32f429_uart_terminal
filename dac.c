@@ -19,3 +19,20 @@ void MX_DAC_Init(void)
   }
 
 }
+
+HAL_StatusTypeDef startDAC(void)
+{
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
+}
+HAL_StatusTypeDef stopDAC(void)
+{
+	HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
+}
+
+HAL_StatusTypeDef setValue(float valVolt)
+{
+	uint8_t valByte;
+	
+	valByte=(uint8_t)((valVolt/3.0)*255);
+	return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, valByte);
+}

@@ -17,7 +17,8 @@ extern DMA_HandleTypeDef hdma_usart1_tx;
 
 	
 char getDate[30];
-
+uint32_t valADC=0;
+uint32_t dac_val=0;
 int main(void)
 {
   HAL_Init();
@@ -31,13 +32,22 @@ int main(void)
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	startPWM();
+	//startADC();
+	startDAC();
 	char Date[30]="Hello\r\t";
+	
+	
   
   while (1)
   {
-    uartTransmit((uint8_t*)Date, strlen(Date),10);
+		startDAC();
+		setValue(2.2);
+		dac_val=HAL_DAC_GetValue(&hdac, DAC_CHANNEL_1);
+		stopDAC();
+		valADC=getValueADC(5);
+    /*uartTransmit((uint8_t*)Date, strlen(Date),10);
 		HAL_UART_Receive(&huart1,(uint8_t*)getDate, 10,0xffff);
-	  HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);
+	  HAL_UART_Transmit(&huart1, (uint8_t*)getDate, strlen(getDate),10);*/
 
     
   }
@@ -65,3 +75,4 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
