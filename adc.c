@@ -27,6 +27,23 @@ void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
+}
 
-
+void startADC()
+{
+	HAL_ADC_Start(&hadc1);
+};
+void stopADC(void)
+{
+	HAL_ADC_Stop(&hadc1);
+}
+uint32_t getValueADC(uint32_t time)
+{
+	startADC();
+	if(HAL_ADC_PollForConversion(&hadc1,time)==HAL_OK)
+	{
+		return HAL_ADC_GetValue(&hadc1);
+	}
+	stopADC();
+	return 0;
 }
