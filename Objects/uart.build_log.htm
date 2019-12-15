@@ -21,39 +21,12 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.6.0
 Dialog DLL:      TCM.DLL V1.36.2.0
  
 <h2>Project:</h2>
-D:\siemens\Stm32f429_uart_terminal\uart.uvprojx
-Project File Date:  12/12/2019
+D:\siemens\MainProject\Stm32f429_uart_terminal\uart.uvprojx
+Project File Date:  12/15/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5.1\ARM\ARMCC\Bin'
-Rebuild target 'Target 1'
-compiling gpio.c...
-gpio.c(8): warning:  #1-D: last line of file ends without a newline
-  }
-gpio.c: 1 warning, 0 errors
-compiling pwm.c...
-compiling dma.c...
-dma.c(20): warning:  #1-D: last line of file ends without a newline
-  }
-dma.c: 1 warning, 0 errors
-compiling uart.c...
-compiling retarget_io.c...
-compiling dac.c...
-dac.c(26): warning:  #940-D: missing return statement at end of non-void function "startDAC" 
-  }
-dac.c(30): warning:  #940-D: missing return statement at end of non-void function "stopDAC" 
-  }
-dac.c(36): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	valByte=(uint8_t)((valVolt/3.0)*255);
-dac.c(38): warning:  #1-D: last line of file ends without a newline
-  }
-dac.c: 4 warnings, 0 errors
-compiling rcc.c...
-compiling adc.c...
-adc.c(49): warning:  #1-D: last line of file ends without a newline
-  }
-adc.c: 1 warning, 0 errors
-compiling stm32f4xx_hal.c...
+Build target 'Target 1'
 compiling main.c...
 RTE\Device\STM32F429ZITx\STCubeGenerated\Src\uart.h(8): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -67,33 +40,16 @@ RTE\Device\STM32F429ZITx\STCubeGenerated\Src\adc.h(8): warning:  #1-D: last line
   #endif
 RTE\Device\STM32F429ZITx\STCubeGenerated\Src\dac.h(10): warning:  #1-D: last line of file ends without a newline
   #endif
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(37): warning:  #177-D: variable "Date"  was declared but never referenced
-  	char Date[30]="Hello\r\t";
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 7 warnings, 0 errors
-compiling stm32f4xx_hal_cortex.c...
-compiling stm32f4xx_it.c...
-compiling stm32f4xx_hal_adc_ex.c...
-compiling stm32f4xx_hal_adc.c...
-compiling USART_STM32F4xx.c...
-compiling stm32f4xx_hal_dac_ex.c...
-compiling stm32f4xx_hal_dac.c...
-compiling stm32f4xx_hal_pwr_ex.c...
-compiling stm32f4xx_hal_gpio.c...
-compiling stm32f4xx_hal_pwr.c...
-compiling stm32f4xx_hal_dma.c...
-compiling stm32f4xx_hal_dma_ex.c...
-compiling stm32f4xx_hal_msp.c...
-assembling startup_stm32f429xx.s...
-compiling stm32f4xx_hal_tim_ex.c...
-compiling stm32f4xx_hal_usart.c...
-compiling stm32f4xx_hal_rcc.c...
-compiling stm32f4xx_hal_uart.c...
-compiling stm32f4xx_hal_rcc_ex.c...
-compiling stm32f4xx_hal_tim.c...
-compiling system_stm32f4xx.c...
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\timer.h(9): warning:  #1-D: last line of file ends without a newline
+  #endif
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(45): warning:  #177-D: variable "Data"  was declared but never referenced
+  	char Data[30]="Hello\r\t";
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(81): warning:  #1-D: last line of file ends without a newline
+  #endif /* USE_FULL_ASSERT */
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=19120 RO-data=684 RW-data=24 ZI-data=2104  
-".\Objects\uart.axf" - 0 Error(s), 14 Warning(s).
+Program Size: Code=18372 RO-data=684 RW-data=28 ZI-data=2164  
+".\Objects\uart.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -174,13 +130,13 @@ Package Vendor: Keil
       Source file:   CMSIS\Driver\USART_STM32F4xx.c
 
    * Component: Keil::Device:STM32Cube Framework:STM32CubeMX:1.1.0
-      Source file:   STCubeGenerated\Src\stm32f4xx_hal_msp.c
       Include file:  MX_Device.h
       Include file:  STCubeGenerated\Inc\stm32f4xx_hal_conf.h
+      Source file:   STCubeGenerated\Src\stm32f4xx_hal_msp.c
 
    * Component: Keil::Device:STM32Cube HAL:ADC:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:Common:1.7.6
       Include file:  Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
@@ -190,12 +146,12 @@ Package Vendor: Keil
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.c
 
    * Component: Keil::Device:STM32Cube HAL:DAC:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:DMA:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:GPIO:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c
@@ -219,12 +175,12 @@ Package Vendor: Keil
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_usart.c
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
       Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429xx.s
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Build Time Elapsed:  00:00:58
+      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

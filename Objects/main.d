@@ -42,3 +42,4 @@
 .\objects\main.o: RTE\Device\STM32F429ZITx\STCubeGenerated\Src\pwm.h
 .\objects\main.o: RTE\Device\STM32F429ZITx\STCubeGenerated\Src\adc.h
 .\objects\main.o: RTE\Device\STM32F429ZITx\STCubeGenerated\Src\dac.h
+.\objects\main.o: RTE\Device\STM32F429ZITx\STCubeGenerated\Src\timer.h
