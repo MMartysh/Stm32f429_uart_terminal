@@ -8,6 +8,7 @@
 #include "adc.h"
 #include "dac.h"
 #include "timer.h"
+#include "terminal.h"
 
 
 
@@ -21,7 +22,6 @@ extern TIM_HandleTypeDef htim3;
 extern float realTime;
 
 
-char getDate[30];
 uint32_t valADC=0;
 uint32_t dac_val=0;
 float time=0;
@@ -38,13 +38,11 @@ int main(void)
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
-	startPWM();
-	startDAC();
-	startTimer();
+	//startPWM();
+	//startDAC();
+	//startTimer();
 	
-	char Data[30]="Hello\r\t";
-
-  
+	//parse();
   while (1)
   {
 		/*startDAC();
@@ -55,6 +53,7 @@ int main(void)
     /*uartTransmit((uint8_t*)Date, strlen(Data),10);
 		HAL_UART_Receive(&huart1,(uint8_t*)getData, 10,0xffff);
 	  HAL_UART_Transmit(&huart1, (uint8_t*)getData, strlen(getData),10);*/
+		parse();
 		getTime();
 		
   }
