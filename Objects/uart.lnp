@@ -25,6 +25,7 @@
 ".\objects\stm32f4xx_hal_pwr_ex.o"
 ".\objects\stm32f4xx_hal_rcc.o"
 ".\objects\stm32f4xx_hal_rcc_ex.o"
+".\objects\stm32f4xx_hal_spi.o"
 ".\objects\stm32f4xx_hal_tim.o"
 ".\objects\stm32f4xx_hal_tim_ex.o"
 ".\objects\stm32f4xx_hal_uart.o"

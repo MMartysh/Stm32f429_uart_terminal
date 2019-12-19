@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.36.2.0
  
 <h2>Project:</h2>
 D:\siemens\MainProject\Stm32f429_uart_terminal\uart.uvprojx
-Project File Date:  12/15/2019
+Project File Date:  12/18/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5.1\ARM\ARMCC\Bin'
@@ -42,14 +42,10 @@ RTE\Device\STM32F429ZITx\STCubeGenerated\Src\dac.h(10): warning:  #1-D: last lin
   #endif
 RTE\Device\STM32F429ZITx\STCubeGenerated\Src\timer.h(9): warning:  #1-D: last line of file ends without a newline
   #endif
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(45): warning:  #177-D: variable "Data"  was declared but never referenced
-  	char Data[30]="Hello\r\t";
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c(81): warning:  #1-D: last line of file ends without a newline
-  #endif /* USE_FULL_ASSERT */
-RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 9 warnings, 0 errors
+RTE\Device\STM32F429ZITx\STCubeGenerated\Src\main.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=18372 RO-data=684 RW-data=28 ZI-data=2164  
-".\Objects\uart.axf" - 0 Error(s), 9 Warning(s).
+Program Size: Code=18856 RO-data=652 RW-data=32 ZI-data=2256  
+".\Objects\uart.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -93,6 +89,7 @@ Package Vendor: Keil
    * Component: GPIO Version: 1.7.6
    * Component: PWR Version: 1.7.6
    * Component: RCC Version: 1.7.6
+   * Component: SPI Version: 1.7.6
    * Component: TIM Version: 1.7.6
    * Component: UART Version: 1.7.6
    * Component: USART Version: 1.7.6
@@ -135,38 +132,41 @@ Package Vendor: Keil
       Source file:   STCubeGenerated\Src\stm32f4xx_hal_msp.c
 
    * Component: Keil::Device:STM32Cube HAL:ADC:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc.c
 
    * Component: Keil::Device:STM32Cube HAL:Common:1.7.6
-      Include file:  Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c
+      Include file:  Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 
    * Component: Keil::Device:STM32Cube HAL:Cortex:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.c
 
    * Component: Keil::Device:STM32Cube HAL:DAC:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dac.c
 
    * Component: Keil::Device:STM32Cube HAL:DMA:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c
 
    * Component: Keil::Device:STM32Cube HAL:GPIO:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c
 
    * Component: Keil::Device:STM32Cube HAL:PWR:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c
 
    * Component: Keil::Device:STM32Cube HAL:RCC:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc_ex.c
 
+   * Component: Keil::Device:STM32Cube HAL:SPI:1.7.6
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c
+
    * Component: Keil::Device:STM32Cube HAL:TIM:1.7.6
-      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.c
+      Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c
 
    * Component: Keil::Device:STM32Cube HAL:UART:1.7.6
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c
@@ -175,12 +175,12 @@ Package Vendor: Keil
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_usart.c
 
    * Component: Keil::Device:Startup:2.6.3
+      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
+      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
       Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429xx.s
-      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-      Source file:   MDK\Device\Source\ARM\STM32F42xxx_43xxx_OPT.s
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
