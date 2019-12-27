@@ -1,0 +1,6 @@
+add
+2
+sub
+3
+echo
+4

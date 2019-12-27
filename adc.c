@@ -1,4 +1,4 @@
-#include "main.h"
+#include "adc.h"
 ADC_HandleTypeDef hadc1;
 void MX_ADC1_Init(void)
 {
@@ -17,7 +17,7 @@ void MX_ADC1_Init(void)
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
-    Error_Handler();
+    //Error_Handler();
   }
  
   sConfig.Channel = ADC_CHANNEL_0;
@@ -25,11 +25,11 @@ void MX_ADC1_Init(void)
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
-    Error_Handler();
+    //Error_Handler();
   }
 }
 
-void startADC()
+void startADC(void)
 {
 	HAL_ADC_Start(&hadc1);
 };
@@ -39,11 +39,13 @@ void stopADC(void)
 }
 uint32_t getValueADC(uint32_t time)
 {
-	startADC();
-	if(HAL_ADC_PollForConversion(&hadc1,time)==HAL_OK)
+	while(1)
 	{
-		return HAL_ADC_GetValue(&hadc1);
+		startADC();
+		if(HAL_ADC_PollForConversion(&hadc1,time)==HAL_OK)
+		{
+			return HAL_ADC_GetValue(&hadc1);
+		}
+		stopADC();
 	}
-	stopADC();
-	return 0;
 }
