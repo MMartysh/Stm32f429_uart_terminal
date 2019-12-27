@@ -11,7 +11,6 @@
 #include "terminal.h"
 
 
-
 extern TIM_HandleTypeDef htim1;
 extern DAC_HandleTypeDef hdac;
 extern ADC_HandleTypeDef hadc1;
@@ -22,6 +21,7 @@ extern TIM_HandleTypeDef htim3;
 extern float realTime;
 
 
+char getDate[30];
 uint32_t valADC=0;
 uint32_t dac_val=0;
 float time=0;
@@ -34,15 +34,17 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
-  MX_TIM1_Init();
+  MX_TIM1_Init(100);
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
-	//startPWM();
-	//startDAC();
-	//startTimer();
+	startPWM();
+	startDAC();
+	startTimer();
 	
-	//parse();
+	char Data[30]="Hello\r\t";
+
+  
   while (1)
   {
 		/*startDAC();
