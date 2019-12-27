@@ -1,5 +1,5 @@
 .\objects\rcc.o: rcc.c
-.\objects\rcc.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
+.\objects\rcc.o: rcc.h
 .\objects\rcc.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\rcc.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
 .\objects\rcc.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h

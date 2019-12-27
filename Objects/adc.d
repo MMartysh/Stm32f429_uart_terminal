@@ -1,5 +1,5 @@
 .\objects\adc.o: adc.c
-.\objects\adc.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
+.\objects\adc.o: adc.h
 .\objects\adc.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\adc.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
 .\objects\adc.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h

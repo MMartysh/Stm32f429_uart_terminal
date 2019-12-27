@@ -1,138 +1,119 @@
-#include "main.h"
+#include "terminal.h"
+#include "stm32f4xx_hal.h"
+#include "dma.h"
+#include "gpio.h"
+#include "rcc.h"
 #include "uart.h"
 #include "string.h"
-#include "terminal.h"
+#include "timer.h"
 #include "pwm.h"
 #include "adc.h"
 #include "dac.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-char newline[] = { 0xD,0xA };
-char operation[4];
-char arg[20];
-char arg2[20];
-char commandsArr[10][10] =
+
+char newline[] = "\r\n";
+char operation[COMMANDS_LENGTH];
+char arg[MAX_ARGUMENT_LENGTH];
+char arg2[MAX_ARGUMENT_LENGTH];
+enum tokenCategory
 {
-  { "hi" },{ "tim" },{ "hlp" },
-	{ "adc" },{ "dac" },{ "spi" },
-	{ "pin" },{ "clk" },{ "pwm" }
+	OPERATION = 0,
+	ARGUMENT1 = 1,
+	ARGUMENT2 = 2,
 };
-int commandNum = 0;
-void aliases()
+int commandNum = OPERATION;
+char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
 {
-  uartTransmit((uint8_t*)"Command not found, maybe you mean: ", 35, 10);
-  for (int i = 0; i<8; i++)
+  { "echo" },{ "tim" },{ "hlp" },
+	{ "dac" },{ "adc" },{ "spi" },
+	{ "pwm" }, {"gpio"}
+};
+void terminalInit(void)
+{
+	HAL_Init();
+  SystemClock_Config();
+	SysTick_Config(SystemCoreClock /1000);
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
+	MX_ADC1_Init();
+	MX_DAC_Init();
+	MX_TIM3_Init();
+	startPWM(TIM_CHANNEL_1);
+	startTimer();
+}
+
+void aliases(void)
+{
+	char str[]="Command not found, maybe you mean: ";
+  uartTransmit((uint8_t*)str, strlen(str), TRANSMIT_TIMEOUT);
+  for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
     if (strpbrk(operation, commandsArr[i]) != NULL)
     {
-      uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), 10);
+      uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
     }
   }
 }
-uint16_t toInt(char *num)
+
+void echo()
 {
-	uint16_t res=0;
-	uint16_t grade = 1;
-	for(int i=strlen(num);i>0;i--)
-	{
-		if(num[i]>47 && num[i]<58)
-		{
-			res+=(uint16_t)(num[i]-'0')*grade;
-		}
-		else
-		{
-			return 0;
-		}
-		grade*=10;
-	}
-	return res;
+	uartTransmit((uint8_t*)arg, strlen(arg), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)arg2, strlen(arg), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
 void help(void)
 {
-  for (int i = 0; i<8; i++)
+  for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
-    uartTransmit((uint8_t*)commandsArr[i], 3, 10);
-    uartTransmit((uint8_t*)newline, strlen(newline), 10);
+    uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
+    uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
   }
 }
-void tim(void)
-{
-}
-uint32_t dac(void)
-{
- switch (toInt(arg))
- {
-  case 1:
-	{
-		return getValue();
-	}
-  case 0:
-	{
-		setValue(toInt(arg2));
-		break;
-	}
- }
- return 1;
-}
-void pin(void)
-{
-}
-void spi(void)
-{
-}
-void pwm(void)
-{
- switch (toInt(arg))
- {
-  case 1:
-	{
-		MX_TIM1_Init(toInt(arg2));
-		startPWM();
-		break;
-	}
-  case 0:
-	{
-		stopPWM();
-		break;
-	}
- }
-}
-void clk(void)
-{
-}
+
+
 void parse(void)
 {
-  char line[12];
-	int i,y;
-  while(uartReceive((uint8_t*)line, 12, 0xffff)!=HAL_OK);
-  int cat = 1;
-	for(i=0;i<3;i++)
-	{
-		operation[i] = line[i];
-	}
-	if(line[3]!='\0')
-	{
-		for(y=0;line[i]!='|';i++)
-		{
-			arg[y]=line[i];
-		}
-		for(y=0;i<strlen(line);i++)
-		{
-			arg2[y]=line[i];
-		}
-	}
-	free(line);
-  for(commandNum=0;commandNum<8;commandNum++)
+	char line[MAX_ARGUMENT_LENGTH];
+  while(uartReceive((uint8_t*)line, 12, 0xffff)!=HAL_OK);//make more user friendly
+  char *token;
+	int category=0;
+  token = strtok(line," \t\n");
+  while(token!=NULL)
   {
-		if (strcmp (commandsArr[commandNum], operation)==0)
-		{
-			break;
-		}
+    switch (category)
+    {
+      case OPERATION:
+      {
+        strcpy(operation, token);
+        break;
+      }
+      case ARGUMENT1:
+      {
+        strcpy(arg, token);
+        break;
+      }
+      case ARGUMENT2:
+      {
+        strcpy(arg2, token);
+        break;
+      }
+    }
+		category++;
+		token=strtok(NULL, " \t\n");
   }
-  execCommand();
+	for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
+  {
+    if (strcmp (commandsArr[commandNum], operation)==0)
+    {
+      break;
+    }
+  }
 }
-int execCommand()
+void execCommand(void)
 {
   if (commandNum == 0)
   {
@@ -140,7 +121,18 @@ int execCommand()
   }
   switch (commandNum)
   {
-		case 1:tim(); break;
+		case 0:
+		{
+			echo();
+			break;
+		}
+		case 1:
+		{
+			char currentTime[5];
+			sprintf(currentTime,"%f",getTime());
+			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);			
+			break;
+		}
 		case 2:
 		{
 			help();
@@ -148,20 +140,50 @@ int execCommand()
 		}
 		case 3:
 		{
-			uint8_t a=getValueADC(5);
-			uartTransmit(&a,4,10);
+			char DACval[5];
+			float valVolt;
+			sscanf(arg,"%f",&valVolt);
+			startDAC();
+			setValue(valVolt);
+			sprintf(DACval,"%d",getValue());
+			uartTransmit((uint8_t*)DACval,3,10);
+			stopDAC();
 			break;
 		}
 		case 4:
 		{
-			uint8_t a=dac();
-			uartTransmit(&a,4,10);
+			char ADCval[5];
+			uint32_t timeout;
+			sscanf(arg,"%u",&timeout);
+			sprintf(ADCval,"%d",getValueADC(timeout));
+			uartTransmit((uint8_t*)ADCval,strlen(ADCval),TRANSMIT_TIMEOUT);
 			break;
 		}
-	  case 5:spi(); break;
-	  case 6:pin(); break;
-	  case 7:clk(); break;
-	  case 8:pwm(); break;
+	  case 5:
+		{
+			//spi(); 
+			break;
+		}
+	  case 6:
+		{
+			uint32_t pulse;
+			sscanf(arg,"%u",&pulse);
+			if(arg2[0])
+			{
+				uint32_t channel;
+				sscanf(arg2,"%u",&channel);
+				stopPWM(channel);
+				MX_TIM1_Init(pulse,channel);
+				startPWM(channel);
+			}
+			else
+			{
+				char pulseConverted[5];
+				sprintf(pulseConverted,"%d",getPulse(pulse));
+				uartTransmit((uint8_t*)pulseConverted,strlen(pulseConverted),TRANSMIT_TIMEOUT);
+			}
+			break;
+		}
   }
 	if(operation[0])
 	{
@@ -176,5 +198,4 @@ int execCommand()
 		free(arg2);
 	}
   commandNum = 0;
-  return 1;
 }

@@ -1,6 +1,6 @@
 #ifndef DAC_H
 #define DAC_H
-#include "main.h"
+#include "stm32f4xx_hal.h"
 
 void MX_DAC_Init(void);
 HAL_StatusTypeDef startDAC(void);

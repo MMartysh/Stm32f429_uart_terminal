@@ -1,5 +1,5 @@
 .\objects\terminal.o: terminal.c
-.\objects\terminal.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
+.\objects\terminal.o: terminal.h
 .\objects\terminal.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\terminal.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
 .\objects\terminal.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
@@ -34,9 +34,12 @@
 .\objects\terminal.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 .\objects\terminal.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\terminal.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
+.\objects\terminal.o: dma.h
+.\objects\terminal.o: gpio.h
+.\objects\terminal.o: rcc.h
 .\objects\terminal.o: uart.h
 .\objects\terminal.o: D:\Programms\ARM\ARMCC\Bin\..\include\string.h
-.\objects\terminal.o: terminal.h
+.\objects\terminal.o: timer.h
 .\objects\terminal.o: pwm.h
 .\objects\terminal.o: adc.h
 .\objects\terminal.o: dac.h

@@ -1,5 +1,5 @@
 .\objects\pwm.o: pwm.c
-.\objects\pwm.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
+.\objects\pwm.o: pwm.h
 .\objects\pwm.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\pwm.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
 .\objects\pwm.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
