@@ -7,8 +7,6 @@ float currTime;
 void SysTick_Handler(void)
 {
   HAL_IncTick();
-	currTime=(HAL_GetTick());
-  currTime/=180000000;
 }
 
 void MX_TIM3_Init(void)
@@ -73,7 +71,4 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-float getTime(void)
-{
-		return currTime;
-}
+
