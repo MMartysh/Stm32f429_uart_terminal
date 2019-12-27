@@ -9,7 +9,6 @@
 ".\objects\timer.o"
 ".\objects\terminal.o"
 ".\objects\main.o"
-".\objects\stm32f4xx_it.o"
 ".\objects\led_f429discovery.o"
 ".\objects\usart_stm32f4xx.o"
 ".\objects\retarget_io.o"

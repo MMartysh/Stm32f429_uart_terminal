@@ -34,6 +34,7 @@ void terminalInit(void)
 {
 	HAL_Init();
   SystemClock_Config();
+	SysTick_Config(SystemCoreClock /1000);
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();

@@ -2,8 +2,14 @@
 TIM_HandleTypeDef htim3;
 
 uint32_t inputCaptureVal;
-float counterVal=0.0;
-float realTime;
+uint32_t counterVal=0U;
+float currTime;
+void SysTick_Handler(void)
+{
+  HAL_IncTick();
+	currTime=(HAL_GetTick());
+  currTime/=180000000;
+}
 
 void MX_TIM3_Init(void)
 {
@@ -52,8 +58,10 @@ HAL_StatusTypeDef startTimer(void)
 	HAL_TIM_Base_Start(&htim3);
 	return HAL_TIM_Base_Start_IT(&htim3);
 }
-
-
+void TIM3_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim3);
+}
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
@@ -67,8 +75,5 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 float getTime(void)
 {
-	__HAL_TIM_SetCounter(&htim3, 1);
-		counterVal+=(__HAL_TIM_GetCounter(&htim3));
-		realTime=counterVal/(52708*3);
-		return realTime;
+		return currTime;
 }
