@@ -8,7 +8,7 @@
 #include "adc.h"
 #include "dac.h"
 #include "timer.h"
-
+#include "terminal.h"
 
 
 extern TIM_HandleTypeDef htim1;
@@ -34,7 +34,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
-  MX_TIM1_Init();
+  MX_TIM1_Init(100);
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
@@ -55,6 +55,7 @@ int main(void)
     /*uartTransmit((uint8_t*)Date, strlen(Data),10);
 		HAL_UART_Receive(&huart1,(uint8_t*)getData, 10,0xffff);
 	  HAL_UART_Transmit(&huart1, (uint8_t*)getData, strlen(getData),10);*/
+		parse();
 		getTime();
 		
   }

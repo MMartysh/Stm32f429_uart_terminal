@@ -101,9 +101,7 @@
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
         <bEvRecOn>1</bEvRecOn>
-        <bSchkAxf>0</bSchkAxf>
-        <bTchkAxf>0</bTchkAxf>
-        <nTsel>6</nTsel>
+        <nTsel>5</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -145,7 +143,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-          <Name>-U48FF69066680535142421667 -O238 -SF10000 -C0 -A0 -I0 -HNlocalhost -HP7184 -P1 -N00("ARM CoreSight SW-DP (ARM Core") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8000 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_2048.FLM -FS08000000 -FL0200000 -FP0($$Device:STM32F429ZITx$CMSIS\Flash\STM32F4xx_2048.FLM)</Name>
+          <Name>-U48FF69066680535142421667 -O238 -SF10000 -C0 -A0 -I0 -HNlocalhost -HP7184 -P1 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8000 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_2048.FLM -FS08000000 -FL0200000 -FP0($$Device:STM32F429ZITx$CMSIS\Flash\STM32F4xx_2048.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -215,6 +213,26 @@
           <WinNumber>1</WinNumber>
           <ItemText>realTime</ItemText>
         </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>getData[20]</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>commandNum</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>commandNum</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>line</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
@@ -260,7 +278,6 @@
       <pMultCmdsp></pMultCmdsp>
       <DebugDescription>
         <Enable>1</Enable>
-        <EnableFlashSeq>0</EnableFlashSeq>
         <EnableLog>0</EnableLog>
         <Protocol>2</Protocol>
         <DbgClock>10000000</DbgClock>
@@ -466,6 +483,30 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>17</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\terminal.h</PathWithFileName>
+      <FilenameWithoutPath>terminal.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>18</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\terminal.c</PathWithFileName>
+      <FilenameWithoutPath>terminal.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -476,7 +517,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>17</FileNumber>
+      <FileNumber>19</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -488,7 +529,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>18</FileNumber>
+      <FileNumber>20</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -500,7 +541,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>19</FileNumber>
+      <FileNumber>21</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -510,14 +551,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
-  </Group>
-
-  <Group>
-    <GroupName>::Board Support</GroupName>
-    <tvExp>0</tvExp>
-    <tvExpOptDlg>0</tvExpOptDlg>
-    <cbSel>0</cbSel>
-    <RteFlg>1</RteFlg>
   </Group>
 
   <Group>
@@ -538,7 +571,7 @@
 
   <Group>
     <GroupName>::Compiler</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>1</RteFlg>
