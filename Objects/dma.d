@@ -1,5 +1,5 @@
 .\objects\dma.o: dma.c
-.\objects\dma.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
+.\objects\dma.o: dma.h
 .\objects\dma.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\dma.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h
 .\objects\dma.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h

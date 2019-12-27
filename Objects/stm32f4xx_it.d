@@ -34,4 +34,5 @@
 .\objects\stm32f4xx_it.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 .\objects\stm32f4xx_it.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\stm32f4xx_it.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
+.\objects\stm32f4xx_it.o: D:\Programms\ARM\PACK\Keil\MDK-Middleware\7.9.0\Board\Board_LED.h
 .\objects\stm32f4xx_it.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_it.h
