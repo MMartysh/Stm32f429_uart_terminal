@@ -34,7 +34,7 @@ void terminalInit(void)
 {
 	HAL_Init();
   SystemClock_Config();
-	SysTick_Config(SystemCoreClock /1000);
+	SysTick_Config(SystemCoreClock);
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
@@ -129,7 +129,7 @@ void execCommand(void)
 		case 1:
 		{
 			char currentTime[5];
-			sprintf(currentTime,"%f",getTime());
+			sprintf(currentTime,"%u",HAL_GetTick());
 			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);			
 			break;
 		}
