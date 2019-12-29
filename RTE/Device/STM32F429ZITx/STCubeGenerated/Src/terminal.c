@@ -41,7 +41,7 @@ void terminalInit(void)
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
-	startPWM(TIM_CHANNEL_1);
+	MX_TIM1_Init();
 	startTimer();
 }
 
@@ -166,21 +166,31 @@ void execCommand(void)
 		}
 	  case 6:
 		{
-			uint32_t pulse;
-			sscanf(arg,"%u",&pulse);
-			if(arg2[0])
+			uint32_t onOff;
+			uint32_t cycle;
+			sscanf(arg,"%u",&onOff);
+			sscanf(arg2,"%u",&cycle);
+			
+			if(onOff==1U)
 			{
-				uint32_t channel;
-				sscanf(arg2,"%u",&channel);
-				stopPWM(channel);
-				MX_TIM1_Init(pulse,channel);
-				startPWM(channel);
+				startPWM(cycle);
+				char mess[]="PWM was started";
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
 			}
+			else if(onOff==0)
+			{
+				stopPWM();
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				char mess1[]="PWM was stopped";
+				uartTransmit((uint8_t*)mess1, strlen(mess1),TRANSMIT_TIMEOUT);
+			}
+				
 			else
 			{
-				char pulseConverted[5];
-				sprintf(pulseConverted,"%d",getPulse(pulse));
-				uartTransmit((uint8_t*)pulseConverted,strlen(pulseConverted),TRANSMIT_TIMEOUT);
+				char mess2[]="Something is wrong. Please enter hlp for more details";
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)mess2, strlen(mess2),TRANSMIT_TIMEOUT);
 			}
 			break;
 		}
