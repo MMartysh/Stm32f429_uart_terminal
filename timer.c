@@ -4,9 +4,12 @@ TIM_HandleTypeDef htim3;
 uint32_t inputCaptureVal;
 uint32_t counterVal=0U;
 float currTime;
+
 void SysTick_Handler(void)
 {
   HAL_IncTick();
+	currTime=(HAL_GetTick());
+  currTime/= 168000000;//converting ticks into seconds(needs testing)
 }
 
 void MX_TIM3_Init(void)
@@ -22,22 +25,22 @@ void MX_TIM3_Init(void)
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
   if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
   if (HAL_TIM_IC_Init(&htim3) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
   sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
@@ -45,7 +48,7 @@ void MX_TIM3_Init(void)
   sConfigIC.ICFilter = 15;
   if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
 
 }
@@ -71,4 +74,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-
+float getTime(void)
+{
+		return currTime;
+}
