@@ -11,6 +11,7 @@
 #include "dac.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "spi5.h"
 
 enum tokenCategory
 {

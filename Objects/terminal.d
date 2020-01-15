@@ -31,12 +31,15 @@
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
+.\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\terminal.o: dma.h
 .\objects\terminal.o: gpio.h
 .\objects\terminal.o: rcc.h
+.\objects\terminal.o: errorHandlers.h
+.\objects\terminal.o: C:\Users\Dell\AppData\Local\Arm\Packs\Keil\MDK-Middleware\7.9.0\Board\Board_LED.h
 .\objects\terminal.o: uart.h
 .\objects\terminal.o: C:\Keil_v5.1\ARM\ARMCC\Bin\..\include\string.h
 .\objects\terminal.o: timer.h
@@ -45,3 +48,4 @@
 .\objects\terminal.o: dac.h
 .\objects\terminal.o: C:\Keil_v5.1\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\terminal.o: C:\Keil_v5.1\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\terminal.o: spi5.h
