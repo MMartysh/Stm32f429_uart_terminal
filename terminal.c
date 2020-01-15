@@ -53,8 +53,23 @@ void terminalInit(void)
 	MX_TIM3_Init();
 	startPWM(TIM_CHANNEL_1);
 	startTimer();
+	char Greeting[3][38]=
+	{
+	"+------------------------------------+",
+	"|   		   STM32F429 terminal			    |",
+	"|Type \"hlp\" to see available commands|",
+	};
+	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)Greeting[1], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)Greeting[2], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
-
 void aliases(void)
 {
 	char str[]="Command not found, maybe you mean: ";
@@ -138,7 +153,8 @@ void execCommand(void)
 		{
 			char currentTime[5];
 			sprintf(currentTime,"%f",getTime());
-			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);			
+			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);		
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);			
 			break;
 		}
 		case HLP:
@@ -154,7 +170,8 @@ void execCommand(void)
 			startDAC();
 			setValue(valVolt);
 			sprintf(DACval,"%d",getValue());
-			uartTransmit((uint8_t*)DACval,3,10);
+			uartTransmit((uint8_t*)DACval,strlen(DACval),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			stopDAC();
 			break;
 		}
@@ -165,6 +182,7 @@ void execCommand(void)
 			sscanf(arg,"%u",&timeout);
 			sprintf(ADCval,"%d",getValueADC(timeout));
 			uartTransmit((uint8_t*)ADCval,strlen(ADCval),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			break;
 		}
 	  case SPI:
@@ -174,22 +192,27 @@ void execCommand(void)
 		}
 	  case PWM:
 		{
-			uint32_t pulse;
-			sscanf(arg,"%u",&pulse);
-			if(strcmp (arg2, "0") == 0)
+			uint32_t onOff;
+			uint32_t cycle;
+			char mess[55];
+			sscanf(arg,"%u",&onOff);
+			sscanf(arg2,"%u",&cycle);
+			if(onOff==1U)
 			{
-				uint32_t channel;
-				sscanf(arg2,"%u",&channel);
-				stopPWM(channel);
-				MX_TIM1_Init(pulse,channel);
-				startPWM(channel);
+				startPWM(cycle);
+				strcpy("PWM was started",mess);
+			}
+			else if(onOff==0U)
+			{
+				stopPWM();
+				strcpy("PWM was stopped",mess);
 			}
 			else
 			{
-				char pulseConverted[5];
-				sprintf(pulseConverted,"%d",getPulse(pulse));
-				uartTransmit((uint8_t*)pulseConverted,strlen(pulseConverted),TRANSMIT_TIMEOUT);
+				strcpy("Something is wrong. Please enter hlp for more details",mess);
 			}
+			uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			break;
 		}
 		case GPIO:
