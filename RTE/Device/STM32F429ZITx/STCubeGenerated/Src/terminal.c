@@ -12,17 +12,27 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-char newline[] = "\r\n";
-char operation[COMMANDS_LENGTH];
-char arg[MAX_ARGUMENT_LENGTH];
-char arg2[MAX_ARGUMENT_LENGTH];
 enum tokenCategory
 {
 	OPERATION = 0,
 	ARGUMENT1 = 1,
 	ARGUMENT2 = 2,
 };
+enum Command
+{
+	ECHO = 0,
+	TIM = 1,
+	HLP = 2,
+	DAC_ = 3,
+	ADC_ = 4,
+	SPI = 5,
+	PWM = 6,
+	GPIO = 7
+};
+char newline[] = "\r\n";
+char operation[COMMANDS_LENGTH];
+char arg[MAX_ARGUMENT_LENGTH];
+char arg2[MAX_ARGUMENT_LENGTH];
 int commandNum = OPERATION;
 char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
 {
@@ -34,14 +44,14 @@ void terminalInit(void)
 {
 	HAL_Init();
   SystemClock_Config();
-	SysTick_Config(SystemCoreClock);
+	SysTick_Config(SystemCoreClock /1000);
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
-	MX_TIM1_Init();
+	startPWM(TIM_CHANNEL_1);
 	startTimer();
 }
 
@@ -78,7 +88,7 @@ void help(void)
 void parse(void)
 {
 	char line[MAX_ARGUMENT_LENGTH];
-  while(uartReceive((uint8_t*)line, 12, 0xffff)!=HAL_OK);//make more user friendly
+  uartReceive((uint8_t*)line, MAX_ARGUMENT_LENGTH, RECEIVE_TIMEOUT);
   char *token;
 	int category=0;
   token = strtok(line," \t\n");
@@ -109,36 +119,34 @@ void parse(void)
   {
     if (strcmp (commandsArr[commandNum], operation)==0)
     {
+			memset(line,0,sizeof(line));
+			memset(operation,0,sizeof(operation));
       break;
     }
   }
 }
 void execCommand(void)
 {
-  if (commandNum == 0)
-  {
-    aliases();
-  }
   switch (commandNum)
   {
-		case 0:
+		case ECHO:
 		{
 			echo();
 			break;
 		}
-		case 1:
+		case TIM:
 		{
 			char currentTime[5];
-			sprintf(currentTime,"%u",HAL_GetTick());
+			sprintf(currentTime,"%f",getTime());
 			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);			
 			break;
 		}
-		case 2:
+		case HLP:
 		{
 			help();
 			break;
 		}
-		case 3:
+		case DAC_:
 		{
 			char DACval[5];
 			float valVolt;
@@ -150,7 +158,7 @@ void execCommand(void)
 			stopDAC();
 			break;
 		}
-		case 4:
+		case ADC_:
 		{
 			char ADCval[5];
 			uint32_t timeout;
@@ -159,53 +167,85 @@ void execCommand(void)
 			uartTransmit((uint8_t*)ADCval,strlen(ADCval),TRANSMIT_TIMEOUT);
 			break;
 		}
-	  case 5:
+	  case SPI:
 		{
 			//spi(); 
 			break;
 		}
-	  case 6:
+	  case PWM:
 		{
-			uint32_t onOff;
-			uint32_t cycle;
-			sscanf(arg,"%u",&onOff);
-			sscanf(arg2,"%u",&cycle);
-			
-			if(onOff==1U)
+			uint32_t pulse;
+			sscanf(arg,"%u",&pulse);
+			if(strcmp (arg2, "0") == 0)
 			{
-				startPWM(cycle);
-				char mess[]="PWM was started";
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-				uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
+				uint32_t channel;
+				sscanf(arg2,"%u",&channel);
+				stopPWM(channel);
+				MX_TIM1_Init(pulse,channel);
+				startPWM(channel);
 			}
-			else if(onOff==0)
-			{
-				stopPWM();
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-				char mess1[]="PWM was stopped";
-				uartTransmit((uint8_t*)mess1, strlen(mess1),TRANSMIT_TIMEOUT);
-			}
-				
 			else
 			{
-				char mess2[]="Something is wrong. Please enter hlp for more details";
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-				uartTransmit((uint8_t*)mess2, strlen(mess2),TRANSMIT_TIMEOUT);
+				char pulseConverted[5];
+				sprintf(pulseConverted,"%d",getPulse(pulse));
+				uartTransmit((uint8_t*)pulseConverted,strlen(pulseConverted),TRANSMIT_TIMEOUT);
 			}
 			break;
 		}
+		case GPIO:
+		{
+			uint32_t pin;
+			char port;
+			sscanf(arg,"%u",&pin);
+			sscanf(arg2,"%c",&port);
+			switch(port)
+			{
+				case 'a':
+				{
+					HAL_GPIO_TogglePin(GPIOA, pin);
+					break;
+				}
+				case 'b':
+				{
+					HAL_GPIO_TogglePin(GPIOB, pin);
+					break;
+				}
+				case 'c':
+				{
+					HAL_GPIO_TogglePin(GPIOC, pin);
+					break;
+				}
+				case 'd':
+				{
+					HAL_GPIO_TogglePin(GPIOD, pin);
+					break;
+				}
+				case 'e':
+				{
+					HAL_GPIO_TogglePin(GPIOE, pin);
+					break;
+				}
+				case 'f':
+				{
+					HAL_GPIO_TogglePin(GPIOF, pin);
+					break;
+				}
+				case 'g':
+				{
+					HAL_GPIO_TogglePin(GPIOG, pin);
+					break;
+				}
+				case 'h':
+				{
+					HAL_GPIO_TogglePin(GPIOH, pin);
+					break;
+				}
+			}
+			break;
+		}
+		/*default:
+		{
+			aliases();
+		}*/
   }
-	if(operation[0])
-	{
-		free(operation);
-	}
-	if(arg[0])
-	{
-		free(arg);
-	}
-	if(arg2[0])
-	{
-		free(arg2);
-	}
-  commandNum = 0;
 }

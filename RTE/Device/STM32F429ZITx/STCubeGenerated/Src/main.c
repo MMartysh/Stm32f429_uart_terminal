@@ -10,14 +10,7 @@ int main(void)
 	execCommand();
   }
 }
-void Error_Handler(void)
-{
-	LED_Initialize();
-	LED_On(0);
-	while(1)
-	{
-	}
-}
+
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
