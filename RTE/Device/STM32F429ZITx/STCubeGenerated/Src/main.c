@@ -6,8 +6,8 @@ int main(void)
   terminalInit();  
   while (1)
   {
-	parse();
-	execCommand();
+		parse();
+		execCommand();
   }
 }
 

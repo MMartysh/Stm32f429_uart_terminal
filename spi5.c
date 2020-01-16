@@ -1,7 +1,21 @@
 #include "spi5.h"
-#include "stm32f4xx_hal.h"
 
 SPI_HandleTypeDef hspi5;
+void writeSPI(uint8_t address, uint8_t data)
+{
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
+  HAL_SPI_Transmit(&hspi5,&address,1,SPI_TIMEOUT);
+  HAL_SPI_Transmit(&hspi5,&data,1,SPI_TIMEOUT);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
+} 
+void readSPI(uint8_t address, uint8_t data)
+{
+	address = address | SPI_READ;
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
+	HAL_SPI_Transmit(&hspi5,&address,1,SPI_TIMEOUT);
+	HAL_SPI_Receive(&hspi5,&data,1,SPI_TIMEOUT);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
+}
 
 void MX_SPI5_Init(void)
 {
@@ -19,6 +33,53 @@ void MX_SPI5_Init(void)
   hspi5.Init.CRCPolynomial = 10;
   if (HAL_SPI_Init(&hspi5) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
+	writeSPI(L3GD20_CTRL_REG1_ADDR,(uint8_t)0x0F);
 }
+
+float L3GD20_GetAngularRateX(float sensitivity)
+{
+	float ang;
+	uint8_t x_h;
+	uint8_t x_l;
+	int16_t xdata_raw;
+
+	readSPI(L3GD20_OUT_X_L_ADDR,x_l);
+	readSPI(L3GD20_OUT_X_H_ADDR,x_h);
+	
+	xdata_raw = (int16_t)( (uint16_t)(x_h << 8) + x_l );
+	ang = (float)xdata_raw/sensitivity;
+	return ang;
+}
+
+float L3GD20_GetAngularRateY(float sensitivity)
+{
+	float ang;
+	uint8_t y_h;
+	uint8_t y_l;
+	int16_t ydata_raw;
+
+	readSPI(L3GD20_OUT_Y_L_ADDR,y_l);
+	readSPI(L3GD20_OUT_Y_H_ADDR,y_h);
+	
+	ydata_raw = (int16_t)( (uint16_t)(y_h << 8) + y_l );
+	ang = (float)ydata_raw/sensitivity;
+	return ang;
+}
+
+float L3GD20_GetAngularRateZ(float sensitivity)
+{
+	float ang;
+	uint8_t z_h;
+	uint8_t z_l;
+	int16_t zdata_raw;
+
+	readSPI(L3GD20_OUT_Z_L_ADDR,z_l);
+	readSPI(L3GD20_OUT_Z_H_ADDR,z_h);
+	
+	zdata_raw = (int16_t)( (uint16_t)(z_h << 8) + z_l );
+	ang = (float)zdata_raw/sensitivity;
+	return ang;
+}
+

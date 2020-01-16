@@ -10,13 +10,13 @@ void MX_DAC_Init(void)
   hdac.Instance = DAC;
   if (HAL_DAC_Init(&hdac) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
   sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
-    //Error_Handler();
+    Error_Handler();
   }
 
 }
@@ -34,7 +34,7 @@ HAL_StatusTypeDef setValue(float valVolt)
 {
 	startDAC();
 	uint8_t valByte;
-	valByte=(uint8_t)((valVolt/3.0)*255);
+	valByte=(uint8_t)((valVolt/(float)3.0)*255);
 	stopDAC();
 	return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, valByte);
 }
