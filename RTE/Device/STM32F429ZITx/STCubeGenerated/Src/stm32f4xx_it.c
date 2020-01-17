@@ -56,6 +56,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern SPI_HandleTypeDef hspi5;
 extern TIM_HandleTypeDef htim3;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
@@ -267,6 +268,20 @@ void FPU_IRQHandler(void)
   /* USER CODE BEGIN FPU_IRQn 1 */
 
   /* USER CODE END FPU_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SPI5 global interrupt.
+  */
+void SPI5_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI5_IRQn 0 */
+
+  /* USER CODE END SPI5_IRQn 0 */
+  HAL_SPI_IRQHandler(&hspi5);
+  /* USER CODE BEGIN SPI5_IRQn 1 */
+
+  /* USER CODE END SPI5_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

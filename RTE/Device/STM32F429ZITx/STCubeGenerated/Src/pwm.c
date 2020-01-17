@@ -58,15 +58,32 @@ void MX_TIM1_Init(uint32_t pwm_pulse, uint32_t channel)
   HAL_TIM_MspPostInit(&htim1);
 
 }
-
-void startPWM(uint32_t channel)
+void startPWM(uint32_t dutyCycle)
 {
-	HAL_TIM_PWM_Start(&htim1, channel);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	htim1.Instance->CCR1=dutyCycle;
 }
 
-void stopPWM(uint32_t channel)
+void stopPWM()
 {
-	HAL_TIM_PWM_Stop(&htim1, channel);
+	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+}
+
+void changePulse(uint32_t pulse)
+{
+	HAL_TIM_PWM_DeInit(&htim1);
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = pulse;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	sConfigOC.Pulse = pulse;
+	if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 uint32_t getPulse(uint32_t channel)

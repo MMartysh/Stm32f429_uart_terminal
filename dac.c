@@ -34,7 +34,7 @@ HAL_StatusTypeDef setValue(float valVolt)
 {
 	startDAC();
 	uint8_t valByte;
-	valByte=(uint8_t)((valVolt/3.0)*255);
+	valByte=(uint8_t)((valVolt/(float)3.0)*255);
 	stopDAC();
 	return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, valByte);
 }

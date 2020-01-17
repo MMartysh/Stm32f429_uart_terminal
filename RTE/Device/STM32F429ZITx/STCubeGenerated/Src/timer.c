@@ -9,7 +9,7 @@ void SysTick_Handler(void)
 {
   HAL_IncTick();
 	currTime=(HAL_GetTick());
-  currTime/= 168000000;
+  currTime/= (float)636.74694822;//converting ticks into seconds(needs testing)
 }
 
 void MX_TIM3_Init(void)

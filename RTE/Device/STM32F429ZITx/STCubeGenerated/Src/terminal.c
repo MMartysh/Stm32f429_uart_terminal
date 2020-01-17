@@ -11,7 +11,8 @@
 #include "dac.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "spi5.h"
+#include "Board_LED.h"
 enum tokenCategory
 {
 	OPERATION = 0,
@@ -27,19 +28,15 @@ enum Command
 	ADC_ = 4,
 	SPI = 5,
 	PWM = 6,
-	GPIO = 7
+	GPIO = 7,
+	UNKNOWN = 8
 };
 char newline[] = "\r\n";
 char operation[COMMANDS_LENGTH];
 char arg[MAX_ARGUMENT_LENGTH];
 char arg2[MAX_ARGUMENT_LENGTH];
 int commandNum = OPERATION;
-char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
-{
-  { "echo" },{ "tim" },{ "hlp" },
-	{ "dac" },{ "adc" },{ "spi" },
-	{ "pwm" }, {"gpio"}
-};
+
 void terminalInit(void)
 {
 	HAL_Init();
@@ -53,8 +50,21 @@ void terminalInit(void)
 	MX_TIM3_Init();
 	startPWM(TIM_CHANNEL_1);
 	startTimer();
+	LED_Initialize();
+	MX_SPI5_Init();
+	uint8_t ctrl1=0x0F;
+	writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
+	uartTransmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
-
+char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
+{
+  { "echo" },{ "tim" },{ "hlp" },
+	{ "dac" },{ "adc" },{ "spi" },
+	{ "pwm" }, {"gpio"}
+};
 void aliases(void)
 {
 	char str[]="Command not found, maybe you mean: ";
@@ -72,7 +82,7 @@ void echo()
 {
 	uartTransmit((uint8_t*)arg, strlen(arg), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)arg2, strlen(arg), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)arg2, strlen(arg2), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
 void help(void)
@@ -87,11 +97,11 @@ void help(void)
 
 void parse(void)
 {
-	char line[MAX_ARGUMENT_LENGTH];
+	char line[MAX_ARGUMENT_LENGTH+1];
   uartReceive((uint8_t*)line, MAX_ARGUMENT_LENGTH, RECEIVE_TIMEOUT);
   char *token;
 	int category=0;
-  token = strtok(line," \t\n");
+  token = strtok(line," \t\n\r");
   while(token!=NULL)
   {
     switch (category)
@@ -113,18 +123,19 @@ void parse(void)
       }
     }
 		category++;
-		token=strtok(NULL, " \t\n");
+		token=strtok(NULL, " \t\n\r");
   }
-	for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
-  {
-    if (strcmp (commandsArr[commandNum], operation)==0)
-    {
-			memset(line,0,sizeof(line));
-			memset(operation,0,sizeof(operation));
-      break;
-    }
-  }
+		for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
+		{
+			if (strcmp (commandsArr[commandNum], operation)==0)
+			{
+				memset(line,0,sizeof(line));
+				memset(operation,0,sizeof(operation));
+				break;
+			}
+		}
 }
+extern SPI_HandleTypeDef hspi5;
 void execCommand(void)
 {
   switch (commandNum)
@@ -138,7 +149,8 @@ void execCommand(void)
 		{
 			char currentTime[5];
 			sprintf(currentTime,"%f",getTime());
-			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);			
+			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);		
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);			
 			break;
 		}
 		case HLP:
@@ -154,7 +166,8 @@ void execCommand(void)
 			startDAC();
 			setValue(valVolt);
 			sprintf(DACval,"%d",getValue());
-			uartTransmit((uint8_t*)DACval,3,10);
+			uartTransmit((uint8_t*)DACval,strlen(DACval),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			stopDAC();
 			break;
 		}
@@ -165,39 +178,70 @@ void execCommand(void)
 			sscanf(arg,"%u",&timeout);
 			sprintf(ADCval,"%d",getValueADC(timeout));
 			uartTransmit((uint8_t*)ADCval,strlen(ADCval),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			break;
 		}
 	  case SPI:
 		{
-			//spi(); 
+			float curr = getTime();
+			uint32_t timeout;
+			char d[6];
+			sscanf(arg,"%u",&timeout);
+			while((getTime()-curr)<timeout)
+			{
+					sprintf(d,"%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					sprintf(d,"%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					
+					sprintf(d,"%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			}
 			break;
 		}
 	  case PWM:
 		{
-			uint32_t pulse;
-			sscanf(arg,"%u",&pulse);
-			if(strcmp (arg2, "0") == 0)
+			uint32_t onOff;
+			uint32_t cycle;
+			char mess[55];
+			sscanf(arg,"%u",&onOff);
+			sscanf(arg2,"%u",&cycle);
+			if(onOff==1U)
 			{
-				uint32_t channel;
-				sscanf(arg2,"%u",&channel);
-				stopPWM(channel);
-				MX_TIM1_Init(pulse,channel);
-				startPWM(channel);
+				startPWM(cycle);
+				strcpy("PWM was started",mess);
+			}
+			else if(onOff==0U)
+			{
+				stopPWM();
+				strcpy("PWM was stopped",mess);
 			}
 			else
 			{
-				char pulseConverted[5];
-				sprintf(pulseConverted,"%d",getPulse(pulse));
-				uartTransmit((uint8_t*)pulseConverted,strlen(pulseConverted),TRANSMIT_TIMEOUT);
+				strcpy("Something is wrong. Please enter hlp for more details",mess);
 			}
+			uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			break;
 		}
 		case GPIO:
 		{
-			uint32_t pin;
+			uint32_t pinnum;
+			uint32_t pin=1;
 			char port;
-			sscanf(arg,"%u",&pin);
+			sscanf(arg,"%u",&pinnum);
 			sscanf(arg2,"%c",&port);
+			for(int i=0;i<pinnum;i++)
+			{
+				pin*=2;
+			}
 			switch(port)
 			{
 				case 'a':
@@ -243,7 +287,7 @@ void execCommand(void)
 			}
 			break;
 		}
-		/*default:
+		/*case UNKNOWN:
 		{
 			aliases();
 		}*/

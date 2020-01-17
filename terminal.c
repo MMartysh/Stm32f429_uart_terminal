@@ -11,7 +11,8 @@
 #include "dac.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "spi5.h"
+#include "Board_LED.h"
 enum tokenCategory
 {
 	OPERATION = 0,
@@ -27,19 +28,15 @@ enum Command
 	ADC_ = 4,
 	SPI = 5,
 	PWM = 6,
-	GPIO = 7
+	GPIO = 7,
+	UNKNOWN = 8
 };
 char newline[] = "\r\n";
 char operation[COMMANDS_LENGTH];
 char arg[MAX_ARGUMENT_LENGTH];
 char arg2[MAX_ARGUMENT_LENGTH];
 int commandNum = OPERATION;
-char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
-{
-  { "echo" },{ "tim" },{ "hlp" },
-	{ "dac" },{ "adc" },{ "spi" },
-	{ "pwm" }, {"gpio"}
-};
+
 void terminalInit(void)
 {
 	HAL_Init();
@@ -53,23 +50,21 @@ void terminalInit(void)
 	MX_TIM3_Init();
 	startPWM(TIM_CHANNEL_1);
 	startTimer();
-	char Greeting[3][38]=
-	{
-	"+------------------------------------+",
-	"|   		   STM32F429 terminal			    |",
-	"|Type \"hlp\" to see available commands|",
-	};
-	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	LED_Initialize();
+	MX_SPI5_Init();
+	uint8_t ctrl1=0x0F;
+	writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
+	uartTransmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)Greeting[1], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)Greeting[2], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)Greeting[0], strlen(Greeting[0]), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
+char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
+{
+  { "echo" },{ "tim" },{ "hlp" },
+	{ "dac" },{ "adc" },{ "spi" },
+	{ "pwm" }, {"gpio"}
+};
 void aliases(void)
 {
 	char str[]="Command not found, maybe you mean: ";
@@ -87,7 +82,7 @@ void echo()
 {
 	uartTransmit((uint8_t*)arg, strlen(arg), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)arg2, strlen(arg), TRANSMIT_TIMEOUT);
+	uartTransmit((uint8_t*)arg2, strlen(arg2), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 }
 void help(void)
@@ -102,11 +97,11 @@ void help(void)
 
 void parse(void)
 {
-	char line[MAX_ARGUMENT_LENGTH];
+	char line[MAX_ARGUMENT_LENGTH+1];
   uartReceive((uint8_t*)line, MAX_ARGUMENT_LENGTH, RECEIVE_TIMEOUT);
   char *token;
 	int category=0;
-  token = strtok(line," \t\n");
+  token = strtok(line," \t\n\r");
   while(token!=NULL)
   {
     switch (category)
@@ -128,18 +123,19 @@ void parse(void)
       }
     }
 		category++;
-		token=strtok(NULL, " \t\n");
+		token=strtok(NULL, " \t\n\r");
   }
-	for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
-  {
-    if (strcmp (commandsArr[commandNum], operation)==0)
-    {
-			memset(line,0,sizeof(line));
-			memset(operation,0,sizeof(operation));
-      break;
-    }
-  }
+		for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
+		{
+			if (strcmp (commandsArr[commandNum], operation)==0)
+			{
+				memset(line,0,sizeof(line));
+				memset(operation,0,sizeof(operation));
+				break;
+			}
+		}
 }
+extern SPI_HandleTypeDef hspi5;
 void execCommand(void)
 {
   switch (commandNum)
@@ -187,7 +183,27 @@ void execCommand(void)
 		}
 	  case SPI:
 		{
-			//spi(); 
+			float curr = getTime();
+			uint32_t timeout;
+			char d[6];
+			sscanf(arg,"%u",&timeout);
+			while((getTime()-curr)<timeout)
+			{
+					sprintf(d,"%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					sprintf(d,"%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					
+					sprintf(d,"%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
+					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			}
 			break;
 		}
 	  case PWM:
@@ -217,10 +233,15 @@ void execCommand(void)
 		}
 		case GPIO:
 		{
-			uint32_t pin;
+			uint32_t pinnum;
+			uint32_t pin=1;
 			char port;
-			sscanf(arg,"%u",&pin);
+			sscanf(arg,"%u",&pinnum);
 			sscanf(arg2,"%c",&port);
+			for(int i=0;i<pinnum;i++)
+			{
+				pin*=2;
+			}
 			switch(port)
 			{
 				case 'a':
@@ -266,7 +287,7 @@ void execCommand(void)
 			}
 			break;
 		}
-		/*default:
+		/*case UNKNOWN:
 		{
 			aliases();
 		}*/
