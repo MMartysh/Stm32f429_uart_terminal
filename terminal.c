@@ -52,6 +52,8 @@ void terminalInit(void)
 	startTimer();
 	LED_Initialize();
 	MX_SPI5_Init();
+	uint8_t ctrl1=0x0F;
+	writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
 	uartTransmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
@@ -181,24 +183,25 @@ void execCommand(void)
 		}
 	  case SPI:
 		{
-			float sensitivity_250 = 114.285f;
-			char gyroData[5]={0,0,0,0,0};
 			float curr = getTime();
 			uint32_t timeout;
+			char d[6];
 			sscanf(arg,"%u",&timeout);
 			while((getTime()-curr)<timeout)
 			{
-					sprintf(gyroData,"%f",L3GD20_GetAngularRateX(1));
-					uartTransmit((uint8_t*)gyroData,strlen(gyroData),TRANSMIT_TIMEOUT);
+					sprintf(d,"%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
 					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 				
-					sprintf(gyroData,"%f",L3GD20_GetAngularRateY(1));
-					uartTransmit((uint8_t*)gyroData,strlen(gyroData),TRANSMIT_TIMEOUT);
+					sprintf(d,"%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
 					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 				
-					sprintf(gyroData,"%f",L3GD20_GetAngularRateZ(1));
-					uartTransmit((uint8_t*)gyroData,strlen(gyroData),TRANSMIT_TIMEOUT);
+					
+					sprintf(d,"%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
+					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
 					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				
 					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 			}
 			break;

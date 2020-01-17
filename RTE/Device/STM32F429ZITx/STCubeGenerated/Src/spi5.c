@@ -8,13 +8,15 @@ void writeSPI(uint8_t address, uint8_t data)
   HAL_SPI_Transmit(&hspi5,&data,1,SPI_TIMEOUT);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
 } 
-void readSPI(uint8_t address, uint8_t data)
+uint8_t readSPI(uint8_t address)
 {
+	uint8_t data;
 	address = address | SPI_READ;
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
 	HAL_SPI_Transmit(&hspi5,&address,1,SPI_TIMEOUT);
 	HAL_SPI_Receive(&hspi5,&data,1,SPI_TIMEOUT);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
+	return data;
 }
 
 void MX_SPI5_Init(void)
@@ -35,7 +37,6 @@ void MX_SPI5_Init(void)
   {
     Error_Handler();
   }
-	writeSPI(L3GD20_CTRL_REG1_ADDR,0x0F);
 }
 
 float L3GD20_GetAngularRateX(float sensitivity)
@@ -45,8 +46,8 @@ float L3GD20_GetAngularRateX(float sensitivity)
 	uint8_t x_l;
 	int16_t xdata_raw;
 
-	readSPI(L3GD20_OUT_X_L_ADDR,x_l);
-	readSPI(L3GD20_OUT_X_H_ADDR,x_h);
+	x_l=readSPI(L3GD20_OUT_X_L_ADDR);
+	x_h=readSPI(L3GD20_OUT_X_H_ADDR);
 	
 	xdata_raw = (int16_t)( (uint16_t)(x_h << 8) + x_l );
 	ang = (float)xdata_raw/sensitivity;
@@ -60,8 +61,8 @@ float L3GD20_GetAngularRateY(float sensitivity)
 	uint8_t y_l;
 	int16_t ydata_raw;
 
-	readSPI(L3GD20_OUT_Y_L_ADDR,y_l);
-	readSPI(L3GD20_OUT_Y_H_ADDR,y_h);
+	y_l=readSPI(L3GD20_OUT_Y_L_ADDR);
+	y_h=readSPI(L3GD20_OUT_Y_H_ADDR);
 	
 	ydata_raw = (int16_t)( (uint16_t)(y_h << 8) + y_l );
 	ang = (float)ydata_raw/sensitivity;
@@ -75,8 +76,8 @@ float L3GD20_GetAngularRateZ(float sensitivity)
 	uint8_t z_l;
 	int16_t zdata_raw;
 
-	readSPI(L3GD20_OUT_Z_L_ADDR,z_l);
-	readSPI(L3GD20_OUT_Z_H_ADDR,z_h);
+	z_l=readSPI(L3GD20_OUT_Z_L_ADDR);
+	z_h=readSPI(L3GD20_OUT_Z_H_ADDR);
 	
 	zdata_raw = (int16_t)( (uint16_t)(z_h << 8) + z_l );
 	ang = (float)zdata_raw/sensitivity;

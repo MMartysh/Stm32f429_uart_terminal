@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\uart.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\uart.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jan 16 12:33:55 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri Jan 17 13:23:18 2020
 <BR><P>
 <H3>Maximum Stack Usage =        596 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -165,8 +165,8 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[82]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
 <P><STRONG><a name="[83]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -294,8 +294,8 @@ Global Symbols
 <P><STRONG><a name="[199]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
 
 <P><STRONG><a name="[84]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<BR><BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
 </UL>
 
 <P><STRONG><a name="[19a]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
@@ -764,8 +764,8 @@ Global Symbols
 
 <P><STRONG><a name="[161]"></a>strcmp</STRONG> (Thumb, 128 bytes, Stack size 0 bytes, strcmpv7m.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_ctype
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_numeric
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_ctype
 </UL>
 
 <P><STRONG><a name="[1a2]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
@@ -951,17 +951,17 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ldexp
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp___mathlib_tofloat
+<BR>[Called By]<UL><LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp___mathlib_tofloat
+<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ldexp
 </UL>
 
 <P><STRONG><a name="[c4]"></a>_scanf_really_hex_real</STRONG> (Thumb, 786 bytes, Stack size 80 bytes, scanf_hexfp.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = _scanf_really_hex_real &rArr; __support_ldexp &rArr; __hardfp_ldexp &rArr; __mathlib_dbl_underflow &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__support_ldexp
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_narrow
+<BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_narrow
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_chval
+<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__support_ldexp
+<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_scanf_hex_real
 </UL>
@@ -1102,7 +1102,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_On
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Initialize
 </UL>
-<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
+<BR>[Called By]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
 <LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DAC_Init
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_ADC1_Init
@@ -1255,6 +1255,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = HAL_GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Initialize
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_MspInit
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DAC_MspInit
@@ -1273,8 +1274,9 @@ Global Symbols
 
 <P><STRONG><a name="[120]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin))
 <BR><BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_On
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
+<LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
 </UL>
 
@@ -1287,11 +1289,11 @@ Global Symbols
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_WaitOnFlagUntilTimeout
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Abort
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFlagStateUntilTimeout
+<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_WaitOnFlagUntilTimeout
 </UL>
 
 <P><STRONG><a name="[12c]"></a>HAL_IncTick</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f4xx_hal.o(i.HAL_IncTick))
@@ -1412,15 +1414,15 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
+<BR>[Called By]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
 </UL>
 
 <P><STRONG><a name="[f2]"></a>HAL_SPI_MspInit</STRONG> (Thumb, 140 bytes, Stack size 32 bytes, stm32f4xx_hal_msp.o(i.HAL_SPI_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_SPI_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
@@ -1442,8 +1444,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 </UL>
-<BR>[Called By]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
-<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
+<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
+<LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
 </UL>
 
 <P><STRONG><a name="[f4]"></a>HAL_SPI_TransmitReceive</STRONG> (Thumb, 554 bytes, Stack size 56 bytes, stm32f4xx_hal_spi.o(i.HAL_SPI_TransmitReceive))
@@ -1480,8 +1482,8 @@ Global Symbols
 <P><STRONG><a name="[f8]"></a>HAL_TIM_Base_Init</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_Base_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Base_SetConfig
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_MspInit
+<BR>[Calls]<UL><LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_MspInit
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Base_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 </UL>
@@ -1489,9 +1491,9 @@ Global Symbols
 <P><STRONG><a name="[f9]"></a>HAL_TIM_Base_MspInit</STRONG> (Thumb, 180 bytes, Stack size 32 bytes, stm32f4xx_hal_msp.o(i.HAL_TIM_Base_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
@@ -1506,12 +1508,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[fb]"></a>HAL_TIM_ConfigClockSource</STRONG> (Thumb, 264 bytes, Stack size 24 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_ConfigClockSource))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_ETR_SetConfig
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_TI2_ConfigInputStage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
+<BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI1_ConfigInputStage
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ITRx_SetConfig
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 </UL>
@@ -1521,12 +1523,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[100]"></a>HAL_TIM_IC_ConfigChannel</STRONG> (Thumb, 224 bytes, Stack size 24 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_IC_ConfigChannel))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = HAL_TIM_IC_ConfigChannel &rArr; TIM_TI1_SetConfig
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = HAL_TIM_IC_ConfigChannel &rArr; TIM_TI4_SetConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI1_SetConfig
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI4_SetConfig
+<BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI4_SetConfig
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI3_SetConfig
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_SetConfig
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI1_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 </UL>
@@ -1601,8 +1603,8 @@ Global Symbols
 <P><STRONG><a name="[113]"></a>HAL_UART_Init</STRONG> (Thumb, 114 bytes, Stack size 8 bytes, stm32f4xx_hal_uart.o(i.HAL_UART_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = HAL_UART_Init &rArr; HAL_UART_MspInit &rArr; Error_Handler &rArr; LED_Initialize &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_SetConfig
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
+<BR>[Calls]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 </UL>
@@ -1620,12 +1622,12 @@ Global Symbols
 <P><STRONG><a name="[114]"></a>HAL_UART_MspInit</STRONG> (Thumb, 260 bytes, Stack size 32 bytes, stm32f4xx_hal_msp.o(i.HAL_UART_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = HAL_UART_MspInit &rArr; Error_Handler &rArr; LED_Initialize &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
+<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
@@ -1649,24 +1651,24 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartTransmit
 </UL>
 
-<P><STRONG><a name="[11c]"></a>L3GD20_GetAngularRateX</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, spi5.o(i.L3GD20_GetAngularRateX))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = L3GD20_GetAngularRateX &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[11c]"></a>L3GD20_GetAngularRateX</STRONG> (Thumb, 58 bytes, Stack size 32 bytes, spi5.o(i.L3GD20_GetAngularRateX))
+<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = L3GD20_GetAngularRateX &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execCommand
 </UL>
 
-<P><STRONG><a name="[11e]"></a>L3GD20_GetAngularRateY</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, spi5.o(i.L3GD20_GetAngularRateY))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = L3GD20_GetAngularRateY &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[11e]"></a>L3GD20_GetAngularRateY</STRONG> (Thumb, 58 bytes, Stack size 32 bytes, spi5.o(i.L3GD20_GetAngularRateY))
+<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = L3GD20_GetAngularRateY &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execCommand
 </UL>
 
-<P><STRONG><a name="[11f]"></a>L3GD20_GetAngularRateZ</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, spi5.o(i.L3GD20_GetAngularRateZ))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = L3GD20_GetAngularRateZ &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[11f]"></a>L3GD20_GetAngularRateZ</STRONG> (Thumb, 58 bytes, Stack size 32 bytes, spi5.o(i.L3GD20_GetAngularRateZ))
+<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = L3GD20_GetAngularRateZ &rArr; readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSPI
 </UL>
@@ -1719,17 +1721,19 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;terminalInit
 </UL>
 
-<P><STRONG><a name="[16a]"></a>MX_GPIO_Init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, gpio.o(i.MX_GPIO_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = MX_GPIO_Init
+<P><STRONG><a name="[126]"></a>MX_GPIO_Init</STRONG> (Thumb, 128 bytes, Stack size 8 bytes, gpio.o(i.MX_GPIO_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = MX_GPIO_Init &rArr; HAL_GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;terminalInit
 </UL>
 
-<P><STRONG><a name="[126]"></a>MX_SPI5_Init</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, spi5.o(i.MX_SPI5_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = MX_SPI5_Init &rArr; writeSPI &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[127]"></a>MX_SPI5_Init</STRONG> (Thumb, 60 bytes, Stack size 8 bytes, spi5.o(i.MX_SPI5_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = MX_SPI5_Init &rArr; HAL_SPI_Init &rArr; HAL_SPI_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;terminalInit
@@ -1765,7 +1769,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f429xx.o(RESET)
 </UL>
-<P><STRONG><a name="[12d]"></a>SystemClock_Config</STRONG> (Thumb, 148 bytes, Stack size 80 bytes, rcc.o(i.SystemClock_Config))
+<P><STRONG><a name="[12d]"></a>SystemClock_Config</STRONG> (Thumb, 178 bytes, Stack size 80 bytes, rcc.o(i.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_RCC_GetSysClockFreq &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
@@ -1847,11 +1851,11 @@ Global Symbols
 <P><STRONG><a name="[145]"></a>__hardfp_ldexp</STRONG> (Thumb, 200 bytes, Stack size 48 bytes, ldexp.o(i.__hardfp_ldexp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = __hardfp_ldexp &rArr; __mathlib_dbl_underflow &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmpeq
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+<LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_overflow
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmpeq
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__support_ldexp
 </UL>
@@ -1902,7 +1906,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execCommand
 </UL>
 
-<P><STRONG><a name="[14d]"></a>execCommand</STRONG> (Thumb, 810 bytes, Stack size 88 bytes, terminal.o(i.execCommand))
+<P><STRONG><a name="[14d]"></a>execCommand</STRONG> (Thumb, 796 bytes, Stack size 88 bytes, terminal.o(i.execCommand))
 <BR><BR>[Stack]<UL><LI>Max Depth = 596 + Unknown Stack Size
 <LI>Call Chain = execCommand &rArr; __0sscanf &rArr; __vfscanf_char &rArr; __vfscanf &rArr; _scanf_real &rArr; _scanf_really_real &rArr; _fp_value &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
@@ -1993,7 +1997,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[11d]"></a>readSPI</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, spi5.o(i.readSPI))
+<P><STRONG><a name="[11d]"></a>readSPI</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, spi5.o(i.readSPI))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = readSPI &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
@@ -2076,10 +2080,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execCommand
 </UL>
 
-<P><STRONG><a name="[15e]"></a>terminalInit</STRONG> (Thumb, 188 bytes, Stack size 16 bytes, terminal.o(i.terminalInit))
+<P><STRONG><a name="[15e]"></a>terminalInit</STRONG> (Thumb, 198 bytes, Stack size 16 bytes, terminal.o(i.terminalInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = terminalInit &rArr; SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_RCC_GetSysClockFreq &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
+<BR>[Calls]<UL><LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeSPI
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Initialize
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
 <LI><a href="#[165]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startTimer
@@ -2088,7 +2093,7 @@ Global Symbols
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_ADC1_Init
 <LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DMA_Init
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartTransmit
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
@@ -2116,13 +2121,13 @@ Global Symbols
 <LI><a href="#[14a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;echo
 </UL>
 
-<P><STRONG><a name="[127]"></a>writeSPI</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, spi5.o(i.writeSPI))
+<P><STRONG><a name="[16a]"></a>writeSPI</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, spi5.o(i.writeSPI))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = writeSPI &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI5_Init
+<BR>[Called By]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;terminalInit
 </UL>
 
 <P><STRONG><a name="[91]"></a>_get_lc_numeric</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, lc_numeric_c.o(locale$$code))
@@ -2160,15 +2165,15 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[171]"></a>__fpl_dcmp_Inf</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, dcmpi.o(x$fpl$dcmpinf), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmple
-<LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmpeq
+<BR><BR>[Called By]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmpeq
+<LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmple
 </UL>
 
 <P><STRONG><a name="[142]"></a>__aeabi_cdcmpeq</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, deqf.o(x$fpl$deqf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_cdcmpeq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ldexp
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp___mathlib_tofloat
+<BR>[Called By]<UL><LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp___mathlib_tofloat
+<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ldexp
 </UL>
 
 <P><STRONG><a name="[170]"></a>_dcmpeq</STRONG> (Thumb, 120 bytes, Stack size 32 bytes, deqf.o(x$fpl$deqf), UNUSED)
@@ -2190,26 +2195,26 @@ Global Symbols
 <P><STRONG><a name="[149]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Called By]<UL><LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;frexp
+<LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_overflow
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;frexp
 </UL>
 
 <P><STRONG><a name="[173]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
-<LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<BR><BR>[Calls]<UL><LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
+<LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
 <P><STRONG><a name="[16d]"></a>__fpl_dnaninf</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, dnaninf.o(x$fpl$dnaninf), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dmul
-<LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmple
-<LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmpeq
+<BR><BR>[Called By]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmpeq
 <LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_d2f
+<LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dmul
+<LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmple
 </UL>
 
 <P><STRONG><a name="[174]"></a>__fpl_dretinf</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, dretinf.o(x$fpl$dretinf), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dmul
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_f2d
+<BR><BR>[Called By]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_f2d
+<LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dmul
 </UL>
 
 <P><STRONG><a name="[144]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, drleqf.o(x$fpl$drleqf))
@@ -2412,8 +2417,8 @@ Local Symbols
 <P><STRONG><a name="[12e]"></a>USART_Control</STRONG> (Thumb, 2332 bytes, Stack size 80 bytes, usart_stm32f4xx.o(i.USART_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = USART_Control &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Abort
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Abort
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_DeInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Control

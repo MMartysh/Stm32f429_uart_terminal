@@ -30,7 +30,8 @@
 #define L3GD20_INT1_TSH_ZH_ADDR       0x36  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_TSH_ZL_ADDR       0x37  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_DURATION_ADDR     0x38  /* Interrupt 1 DURATION register */
-
+#define SENSITIVITY_NONE 								1
+#define SENSITIVITY_250 							114.285
 #include "stm32f4xx_hal.h"
 #include "errorHandlers.h"
 
@@ -38,6 +39,6 @@ void MX_SPI5_Init(void);
 float L3GD20_GetAngularRateX(float sensitivity);
 float L3GD20_GetAngularRateY(float sensitivity);
 float L3GD20_GetAngularRateZ(float sensitivity);
-void readSPI(uint8_t address, uint8_t data);
+uint8_t readSPI(uint8_t address);
 void writeSPI(uint8_t address, uint8_t data);
 #endif
