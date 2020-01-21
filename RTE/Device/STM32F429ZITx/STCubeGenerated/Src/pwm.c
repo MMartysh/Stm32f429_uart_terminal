@@ -2,7 +2,8 @@
 
 TIM_HandleTypeDef htim1;
 TIM_OC_InitTypeDef sConfigOC = {0};
-void MX_TIM1_Init(uint32_t pwm_pulse, uint32_t channel)
+
+void MX_TIM1_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -10,7 +11,7 @@ void MX_TIM1_Init(uint32_t pwm_pulse, uint32_t channel)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 16;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 100;
+  htim1.Init.Period = 99;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -34,13 +35,13 @@ void MX_TIM1_Init(uint32_t pwm_pulse, uint32_t channel)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = pwm_pulse;
+  sConfigOC.Pulse = 20;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, channel) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -58,36 +59,14 @@ void MX_TIM1_Init(uint32_t pwm_pulse, uint32_t channel)
   HAL_TIM_MspPostInit(&htim1);
 
 }
-void startPWM(uint32_t dutyCycle)
+uint32_t startPWM(uint32_t dutyCycle)
 {
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 	htim1.Instance->CCR1=dutyCycle;
+	return dutyCycle;
 }
 
 void stopPWM()
 {
 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
 }
-
-void changePulse(uint32_t pulse)
-{
-	HAL_TIM_PWM_DeInit(&htim1);
-	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = pulse;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
-  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	sConfigOC.Pulse = pulse;
-	if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-uint32_t getPulse(uint32_t channel)
-{
-	return sConfigOC.Pulse;
-}
-
