@@ -48,7 +48,7 @@ void terminalInit(void)
 	MX_ADC1_Init();
 	MX_DAC_Init();
 	MX_TIM3_Init();
-	startPWM(TIM_CHANNEL_1);
+	MX_TIM1_Init();
 	startTimer();
 	LED_Initialize();
 	MX_SPI5_Init();
@@ -71,7 +71,7 @@ void aliases(void)
   uartTransmit((uint8_t*)str, strlen(str), TRANSMIT_TIMEOUT);
   for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
-    if (strpbrk(operation, commandsArr[i]) != NULL)
+		if (strpbrk(operation, commandsArr[i]) != NULL)
     {
       uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
     }
@@ -135,7 +135,7 @@ void parse(void)
 			}
 		}
 }
-extern SPI_HandleTypeDef hspi5;
+
 void execCommand(void)
 {
   switch (commandNum)
@@ -216,16 +216,16 @@ void execCommand(void)
 			if(onOff==1U)
 			{
 				startPWM(cycle);
-				strcpy("PWM was started",mess);
+				strcpy(mess,"PWM was started");
 			}
 			else if(onOff==0U)
 			{
 				stopPWM();
-				strcpy("PWM was stopped",mess);
+				strcpy(mess, "PWM was stopped");
 			}
 			else
 			{
-				strcpy("Something is wrong. Please enter hlp for more details",mess);
+				strcpy(mess,"Something is wrong. Please enter hlp for more details");
 			}
 			uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
 			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
@@ -287,9 +287,5 @@ void execCommand(void)
 			}
 			break;
 		}
-		/*case UNKNOWN:
-		{
-			aliases();
-		}*/
   }
 }
