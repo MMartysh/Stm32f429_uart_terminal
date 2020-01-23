@@ -18,6 +18,7 @@ enum tokenCategory
 	OPERATION = 0,
 	ARGUMENT1 = 1,
 	ARGUMENT2 = 2,
+	ARGUMENT3 = 3
 };
 enum Command
 {
@@ -36,7 +37,8 @@ char operation[COMMANDS_LENGTH];
 char arg[MAX_ARGUMENT_LENGTH];
 char arg2[MAX_ARGUMENT_LENGTH];
 int commandNum = OPERATION;
-
+uint8_t onOff=1U;
+char mess[55];
 void terminalInit(void)
 {
 	HAL_Init();
@@ -52,8 +54,8 @@ void terminalInit(void)
 	startTimer();
 	LED_Initialize();
 	MX_SPI5_Init();
-	uint8_t ctrl1=0x0F;
-	writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
+	writeSPI(L3GD20_CTRL_REG1_ADDR,0x0F);
+	HAL_Delay(1000u);
 	uartTransmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 	uartTransmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
@@ -67,13 +69,15 @@ char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
 };
 void aliases(void)
 {
-	char str[]="Command not found, maybe you mean: ";
-  uartTransmit((uint8_t*)str, strlen(str), TRANSMIT_TIMEOUT);
+	sprintf(mess,"Command not found, maybe you mean: ");
+  uartTransmit((uint8_t*)mess, strlen(mess), TRANSMIT_TIMEOUT);
+	memset(mess,NULL,sizeof(mess));
   for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
-		if (strpbrk(operation, commandsArr[i]) != NULL)
+    if (strpbrk(operation, commandsArr[i]) != NULL)
     {
       uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
     }
   }
 }
@@ -121,21 +125,28 @@ void parse(void)
         strcpy(arg2, token);
         break;
       }
+			case ARGUMENT3:
+      {
+        break;
+      }
     }
 		category++;
 		token=strtok(NULL, " \t\n\r");
   }
 		for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
 		{
+			if(line[0]==0)
+			{
+				commandNum=-1;
+				break;
+			}
 			if (strcmp (commandsArr[commandNum], operation)==0)
 			{
-				memset(line,0,sizeof(line));
-				memset(operation,0,sizeof(operation));
+				memset(line,NULL,sizeof(line));
 				break;
 			}
 		}
 }
-
 void execCommand(void)
 {
   switch (commandNum)
@@ -147,10 +158,10 @@ void execCommand(void)
 		}
 		case TIM:
 		{
-			char currentTime[5];
-			sprintf(currentTime,"%f",getTime());
-			uartTransmit((uint8_t*)&currentTime,strlen(currentTime),TRANSMIT_TIMEOUT);		
+			sprintf(mess,"Time from program start:%f",getTime());
+			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);		
 			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);			
+			memset(mess,NULL,sizeof(mess));
 			break;
 		}
 		case HLP:
@@ -160,75 +171,83 @@ void execCommand(void)
 		}
 		case DAC_:
 		{
-			char DACval[5];
 			float valVolt;
 			sscanf(arg,"%f",&valVolt);
 			startDAC();
 			setValue(valVolt);
-			sprintf(DACval,"%d",getValue());
-			uartTransmit((uint8_t*)DACval,strlen(DACval),TRANSMIT_TIMEOUT);
+			sprintf(mess,"DAC value:%d",getValue());
+			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
 			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			memset(mess,NULL,sizeof(mess));
 			stopDAC();
 			break;
 		}
 		case ADC_:
 		{
-			char ADCval[5];
 			uint32_t timeout;
 			sscanf(arg,"%u",&timeout);
-			sprintf(ADCval,"%d",getValueADC(timeout));
-			uartTransmit((uint8_t*)ADCval,strlen(ADCval),TRANSMIT_TIMEOUT);
+			sprintf(mess,"ADC value: %d",getValueADC(timeout));
+			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
 			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			memset(mess,NULL,sizeof(mess));
 			break;
 		}
 	  case SPI:
 		{
 			float curr = getTime();
-			uint32_t timeout;
-			char d[6];
-			sscanf(arg,"%u",&timeout);
-			while((getTime()-curr)<timeout)
+			uint32_t timeout=1000U;
+			uint32_t nums=5U;
+			uint8_t ctrl1=0x0F;
+			writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
+			HAL_Delay(timeout);
+			sprintf(mess,"CTRL REG 1 value:%u",readSPI(L3GD20_CTRL_REG1_ADDR));
+			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			for(int i=0;i<nums;i++)
 			{
-					sprintf(d,"%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
-					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
-					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(mess,"X:%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
+				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 				
-					sprintf(d,"%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
-					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
-					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(mess,"Y:%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
+				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 				
-					
-					sprintf(d,"%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
-					uartTransmit((uint8_t*)d,strlen(d),TRANSMIT_TIMEOUT);
-					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(mess,"Z:%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
+				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
 				
-					uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				HAL_Delay(timeout);
 			}
+			memset(mess,NULL,sizeof(mess));
+			ctrl1=0x07;
+			writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
 			break;
 		}
 	  case PWM:
 		{
-			uint32_t onOff;
 			uint32_t cycle;
-			char mess[55];
-			sscanf(arg,"%u",&onOff);
-			sscanf(arg2,"%u",&cycle);
+			sscanf(arg,"%u",&cycle);
 			if(onOff==1U)
 			{
 				startPWM(cycle);
-				strcpy(mess,"PWM was started");
+				sprintf(mess,"PWM was started");
+				onOff=0U;
 			}
 			else if(onOff==0U)
 			{
 				stopPWM();
-				strcpy(mess, "PWM was stopped");
+				sprintf(mess,"PWM was stopped");
+				onOff=1U;
 			}
 			else
 			{
-				strcpy(mess,"Something is wrong. Please enter hlp for more details");
+				sprintf(mess,"Something is wrong. Please enter hlp for more details");
 			}
 			uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
 			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			memset(mess,NULL,sizeof(mess));
 			break;
 		}
 		case GPIO:
@@ -242,50 +261,74 @@ void execCommand(void)
 			{
 				pin*=2;
 			}
+			uint8_t status=0u;
 			switch(port)
 			{
 				case 'a':
 				{
 					HAL_GPIO_TogglePin(GPIOA, pin);
+					status++;
 					break;
 				}
 				case 'b':
 				{
 					HAL_GPIO_TogglePin(GPIOB, pin);
+					status++;
 					break;
 				}
 				case 'c':
 				{
 					HAL_GPIO_TogglePin(GPIOC, pin);
+					status++;
 					break;
 				}
 				case 'd':
 				{
 					HAL_GPIO_TogglePin(GPIOD, pin);
+					status++;
 					break;
 				}
 				case 'e':
 				{
-					HAL_GPIO_TogglePin(GPIOE, pin);
+					
+					status++;HAL_GPIO_TogglePin(GPIOE, pin);
 					break;
 				}
 				case 'f':
 				{
 					HAL_GPIO_TogglePin(GPIOF, pin);
+					status++;
 					break;
 				}
 				case 'g':
 				{
 					HAL_GPIO_TogglePin(GPIOG, pin);
+					status++;
 					break;
 				}
 				case 'h':
 				{
 					HAL_GPIO_TogglePin(GPIOH, pin);
+					status++;
 					break;
 				}
 			}
+			if(status==0U)
+			{
+				sprintf(mess,"Pin P%c%u doesn't exist",port,pinnum);
+			}
+			else
+			{
+				sprintf(mess,"Pin P%c%u has been toggled",port,pinnum);
+			}
+			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
+			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+			memset(mess,NULL,sizeof(mess));
 			break;
+		}
+		case UNKNOWN:
+		{
+			aliases();
 		}
   }
 }

@@ -70,7 +70,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM3)
 	{
 			inputCaptureVal=__HAL_TIM_GetCounter(htim);
-			__HAL_TIM_SetCounter(htim, 1);
+		__HAL_TIM_SetCounter(htim, 1);
 	}
 }
 
