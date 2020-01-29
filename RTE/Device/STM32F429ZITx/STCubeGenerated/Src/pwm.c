@@ -2,6 +2,7 @@
 
 TIM_HandleTypeDef htim1;
 TIM_OC_InitTypeDef sConfigOC = {0};
+
 void MX_TIM1_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
@@ -58,35 +59,35 @@ void MX_TIM1_Init(void)
   HAL_TIM_MspPostInit(&htim1);
 
 }
-void startPWM(uint32_t dutyCycle)
+void PWM_Start(uint32_t p_ui_DutyCycle)
 {
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	htim1.Instance->CCR1=dutyCycle;
+	htim1.Instance->CCR1=p_ui_DutyCycle;
 }
 
-void stopPWM()
+void PWM_Stop()
 {
 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
 }
 
-void changePulse(uint32_t pulse)
+void PWM_ChangePulse(uint32_t p_ui_Pulse)
 {
 	HAL_TIM_PWM_DeInit(&htim1);
 	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = pulse;
+  sConfigOC.Pulse = p_ui_Pulse;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	sConfigOC.Pulse = pulse;
+	sConfigOC.Pulse = p_ui_Pulse;
 	if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
   {
     Error_Handler();
   }
 }
 
-uint32_t getPulse(uint32_t channel)
+uint32_t PWM_GetPulse(void)
 {
 	return sConfigOC.Pulse;
 }

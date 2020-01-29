@@ -490,6 +490,16 @@
               <FileType>5</FileType>
               <FilePath>.\errorHandlers.h</FilePath>
             </File>
+            <File>
+              <FileName>L3GD20.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\L3GD20.h</FilePath>
+            </File>
+            <File>
+              <FileName>L3GD20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\L3GD20.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

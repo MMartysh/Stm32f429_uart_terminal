@@ -8,8 +8,10 @@
 #define RECEIVE_TIMEOUT 100
 #define MAX_STRING_LENGTH 20
 
-void execCommand(void);
-void parse(void);
-void terminalInit(void);
-
+void 				TERMINAL_ExecCommand(void);
+void 				TERMINAL_Parse(void);
+void 				TERMINAL_Init(void);
+static void TERMINAL_Aliases(void);
+static void TERMINAL_Help(void);
+static void TERMINAL_Echo(void);
 #endif

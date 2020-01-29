@@ -1,5 +1,7 @@
 #include "adc.h"
+
 ADC_HandleTypeDef hadc1;
+
 void MX_ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
@@ -29,23 +31,23 @@ void MX_ADC1_Init(void)
   }
 }
 
-void startADC(void)
+void ADC_Start(void)
 {
 	HAL_ADC_Start(&hadc1);
 };
-void stopADC(void)
+void ADC_Stop(void)
 {
 	HAL_ADC_Stop(&hadc1);
 }
-uint32_t getValueADC(uint32_t time)
+uint32_t ADC_GetValue(uint32_t p_ui_Time)
 {
 	while(1)
 	{
-		startADC();
-		if(HAL_ADC_PollForConversion(&hadc1,time)==HAL_OK)
+		ADC_Start();
+		if(HAL_ADC_PollForConversion(&hadc1,p_ui_Time)==HAL_OK)
 		{
 			return HAL_ADC_GetValue(&hadc1);
 		}
-		stopADC();
+		ADC_Stop();
 	}
 }

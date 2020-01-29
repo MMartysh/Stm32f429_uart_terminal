@@ -4,10 +4,10 @@
 #include "stm32f4xx_hal.h"
 #include "errorHandlers.h"
 
-void MX_DAC_Init(void);
-HAL_StatusTypeDef startDAC(void);
-HAL_StatusTypeDef stopDAC(void);
-HAL_StatusTypeDef setValue(float valVolt);
-uint32_t getValue(void);
+void 							MX_DAC_Init(void);
+HAL_StatusTypeDef DAC_Start(void);
+HAL_StatusTypeDef DAC_Stop(void);
+HAL_StatusTypeDef DAC_SetValue(float p_fl_ValVolt);
+uint32_t 					DAC_GetValue(void);
 
 #endif

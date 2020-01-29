@@ -9,37 +9,46 @@
 #include "pwm.h"
 #include "adc.h"
 #include "dac.h"
+#include "spi5.h"
+#include "L3GD20.h"
+#include "Board_LED.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "spi5.h"
-#include "Board_LED.h"
-enum tokenCategory
+
+enum enTokenCategory
 {
-	OPERATION = 0,
-	ARGUMENT1 = 1,
-	ARGUMENT2 = 2,
-	ARGUMENT3 = 3
+	EN_TC_OPERATION = 0,
+	EN_TC_ARGUMENT1 = 1,
+	EN_TC_ARGUMENT2 = 2,
+	EN_TC_ARGUMENT3 = 3
 };
-enum Command
+enum enCommand
 {
-	ECHO = 0,
-	TIM = 1,
-	HLP = 2,
-	DAC_ = 3,
-	ADC_ = 4,
-	SPI = 5,
-	PWM = 6,
-	GPIO = 7,
-	UNKNOWN = 8
+	EN_CMD_ECHO 		= 0,
+	EN_CMD_TIM 			= 1,
+	EN_CMD_HLP 			= 2,
+	EN_CMD_DAC 			= 3,
+	EN_CMD_ADC 			= 4,
+	EN_CMD_SPI 			= 5,
+	EN_CMD_PWM 			= 6,
+	EN_CMD_GPIO 		= 7,
+	EN_CMD_UNKNOWN 	= 8
 };
-char newline[] = "\r\n";
-char operation[COMMANDS_LENGTH];
-char arg[MAX_ARGUMENT_LENGTH];
-char arg2[MAX_ARGUMENT_LENGTH];
-int commandNum = OPERATION;
-uint8_t onOff=1U;
-char mess[55];
-void terminalInit(void)
+
+char 		g_ach_Newline[] = "\r\n";
+char 		g_ach_Operation[COMMANDS_LENGTH];
+char 		g_ach_Arg[MAX_ARGUMENT_LENGTH];
+char 		g_ach_Arg2[MAX_ARGUMENT_LENGTH];
+int  		g_i_CommandNum = EN_TC_OPERATION;
+uint8_t g_ui_OnOff=1U;
+char 		g_ach_Mess[55];
+char g_ach_CommandArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
+{
+  { "echo" },{ "tim" },{ "hlp" },
+	{ "dac" },{ "adc" },{ "spi" },
+	{ "pwm" }, {"gpio"}
+};
+void TERMINAL_Init(void)
 {
 	HAL_Init();
   SystemClock_Config();
@@ -51,284 +60,273 @@ void terminalInit(void)
 	MX_DAC_Init();
 	MX_TIM3_Init();
 	MX_TIM1_Init();
-	startTimer();
+	TIMER_Start();
 	LED_Initialize();
 	MX_SPI5_Init();
-	writeSPI(L3GD20_CTRL_REG1_ADDR,0x0F);
+	L3GD20_Init();
 	HAL_Delay(1000u);
-	uartTransmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)"Welcome to our STM32F429 terminal\n",34,TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 }
-char commandsArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
+void TERMINAL_Aliases(void)
 {
-  { "echo" },{ "tim" },{ "hlp" },
-	{ "dac" },{ "adc" },{ "spi" },
-	{ "pwm" }, {"gpio"}
-};
-void aliases(void)
-{
-	sprintf(mess,"Command not found, maybe you mean: ");
-  uartTransmit((uint8_t*)mess, strlen(mess), TRANSMIT_TIMEOUT);
-	memset(mess,NULL,sizeof(mess));
+	sprintf(g_ach_Mess,"Command not found, maybe you mean: ");
+  UART_Transmit((uint8_t*)g_ach_Mess, strlen(g_ach_Mess), TRANSMIT_TIMEOUT);
+	memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
   for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
-    if (strpbrk(operation, commandsArr[i]) != NULL)
+    if (strpbrk(g_ach_Operation, g_ach_CommandArr[i]) != NULL)
     {
-      uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+      UART_Transmit((uint8_t*)g_ach_CommandArr[i], strlen(g_ach_CommandArr[i]), TRANSMIT_TIMEOUT);
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
     }
   }
 }
 
-void echo()
+void TERMINAL_Echo()
 {
-	uartTransmit((uint8_t*)arg, strlen(arg), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)arg2, strlen(arg2), TRANSMIT_TIMEOUT);
-	uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Arg, strlen(g_ach_Arg), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Arg2, strlen(g_ach_Arg2), TRANSMIT_TIMEOUT);
+	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 }
-void help(void)
+void TERMINAL_Help(void)
 {
   for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
   {
-    uartTransmit((uint8_t*)commandsArr[i], strlen(commandsArr[i]), TRANSMIT_TIMEOUT);
-    uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+    UART_Transmit((uint8_t*)g_ach_CommandArr[i], strlen(g_ach_CommandArr[i]), TRANSMIT_TIMEOUT);
+    UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
   }
 }
 
 
-void parse(void)
+void TERMINAL_Parse(void)
 {
-	char line[MAX_ARGUMENT_LENGTH+1];
-  uartReceive((uint8_t*)line, MAX_ARGUMENT_LENGTH, RECEIVE_TIMEOUT);
-  char *token;
-	int category=0;
-  token = strtok(line," \t\n\r");
-  while(token!=NULL)
+	char 	l_ach_Line[MAX_ARGUMENT_LENGTH+1];
+	char *l_pch_Token;
+	int 	l_i_Category=0;
+  UART_Receive((uint8_t*)l_ach_Line, MAX_ARGUMENT_LENGTH, RECEIVE_TIMEOUT);
+  l_pch_Token = strtok(l_ach_Line," \t\n\r");
+  while(l_pch_Token!=NULL)
   {
-    switch (category)
+    switch (l_i_Category)
     {
-      case OPERATION:
+      case EN_TC_OPERATION:
       {
-        strcpy(operation, token);
+        strcpy(g_ach_Operation, l_pch_Token);
         break;
       }
-      case ARGUMENT1:
+      case EN_TC_ARGUMENT1:
       {
-        strcpy(arg, token);
+        strcpy(g_ach_Arg, l_pch_Token);
         break;
       }
-      case ARGUMENT2:
+      case EN_TC_ARGUMENT2:
       {
-        strcpy(arg2, token);
+        strcpy(g_ach_Arg2, l_pch_Token);
         break;
       }
-			case ARGUMENT3:
+			case EN_TC_ARGUMENT3:
       {
         break;
       }
     }
-		category++;
-		token=strtok(NULL, " \t\n\r");
+		l_i_Category++;
+		l_pch_Token=strtok(NULL, " \t\n\r");
   }
-		for(commandNum=0;commandNum<NUMBER_OF_COMMANDS;commandNum++)
+		for(g_i_CommandNum=0;g_i_CommandNum<NUMBER_OF_COMMANDS;g_i_CommandNum++)
 		{
-			if(line[0]==0)
+			if(l_ach_Line[0]==0)
 			{
-				commandNum=-1;
+				g_i_CommandNum=-1;
 				break;
 			}
-			if (strcmp (commandsArr[commandNum], operation)==0)
+			if (strcmp (g_ach_CommandArr[g_i_CommandNum], g_ach_Operation)==0)
 			{
-				memset(line,NULL,sizeof(line));
+				memset(l_ach_Line,NULL,sizeof(l_ach_Line));
 				break;
 			}
 		}
 }
-void execCommand(void)
+void TERMINAL_ExecCommand(void)
 {
-  switch (commandNum)
+  switch (g_i_CommandNum)
   {
-		case ECHO:
+		case EN_CMD_ECHO:
 		{
-			echo();
+			TERMINAL_Echo();
 			break;
 		}
-		case TIM:
+		case EN_CMD_TIM:
 		{
-			sprintf(mess,"Time from program start:%f",getTime());
-			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);		
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);			
-			memset(mess,NULL,sizeof(mess));
+			sprintf(g_ach_Mess,"Time from program start:%f",TIMER_GetTime());
+			UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);		
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);			
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
 			break;
 		}
-		case HLP:
+		case EN_CMD_HLP:
 		{
-			help();
+			TERMINAL_Help();
 			break;
 		}
-		case DAC_:
+		case EN_CMD_DAC:
 		{
-			float valVolt;
-			sscanf(arg,"%f",&valVolt);
-			startDAC();
-			setValue(valVolt);
-			sprintf(mess,"DAC value:%d",getValue());
-			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-			memset(mess,NULL,sizeof(mess));
-			stopDAC();
+			float l_fl_ValVolt;
+			sscanf(g_ach_Arg,"%f",&l_fl_ValVolt);
+			DAC_Start();
+			DAC_SetValue(l_fl_ValVolt);
+			sprintf(g_ach_Mess,"DAC value:%d",DAC_GetValue());
+			UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
+			DAC_Stop();
 			break;
 		}
-		case ADC_:
+		case EN_CMD_ADC:
 		{
-			uint32_t timeout;
-			sscanf(arg,"%u",&timeout);
-			sprintf(mess,"ADC value: %d",getValueADC(timeout));
-			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-			memset(mess,NULL,sizeof(mess));
+			uint32_t l_ui_Timeout;
+			sscanf(g_ach_Arg,"%u",&l_ui_Timeout);
+			sprintf(g_ach_Mess,"ADC value: %d",ADC_GetValue(l_ui_Timeout));
+			UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
 			break;
 		}
-	  case SPI:
+	  case EN_CMD_SPI:
 		{
-			float curr = getTime();
-			uint32_t timeout=1000U;
-			uint32_t nums=5U;
-			uint8_t ctrl1=0x0F;
-			writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
-			HAL_Delay(timeout);
-			sprintf(mess,"CTRL REG 1 value:%u",readSPI(L3GD20_CTRL_REG1_ADDR));
-			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-			for(int i=0;i<nums;i++)
+			float 		l_fl_Curr = TIMER_GetTime();
+			uint32_t 	l_ui_DelayTime=1000U;
+			uint32_t 	l_ui_NumberOfIteration=5U;
+			L3GD20_Init();
+			HAL_Delay(l_ui_DelayTime);
+			for(int i=0;i<l_ui_NumberOfIteration;i++)
 			{
-				sprintf(mess,"X:%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
-				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(g_ach_Mess,"X:%f",L3GD20_GetAngularRateX(SENSITIVITY_NONE));
+				UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+				UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 				
-				sprintf(mess,"Y:%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
-				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(g_ach_Mess,"Y:%f",L3GD20_GetAngularRateY(SENSITIVITY_NONE));
+				UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+				UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 				
-				sprintf(mess,"Z:%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
-				uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
+				sprintf(g_ach_Mess,"Z:%f",L3GD20_GetAngularRateZ(SENSITIVITY_NONE));
+				UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+				UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 				
-				uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-				HAL_Delay(timeout);
+				UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+				HAL_Delay(l_ui_DelayTime);
 			}
-			memset(mess,NULL,sizeof(mess));
-			ctrl1=0x07;
-			writeSPI(L3GD20_CTRL_REG1_ADDR,ctrl1);
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
+			L3GD20_DeInit();
 			break;
 		}
-	  case PWM:
+	  case EN_CMD_PWM:
 		{
-			uint32_t cycle;
-			sscanf(arg,"%u",&cycle);
-			if(onOff==1U)
+			uint32_t l_ui_DutyCycle;
+			sscanf(g_ach_Arg,"%u",&l_ui_DutyCycle);
+			if(g_ui_OnOff==1U)
 			{
-				startPWM(cycle);
-				sprintf(mess,"PWM was started");
-				onOff=0U;
+				PWM_Start(l_ui_DutyCycle);
+				sprintf(g_ach_Mess,"PWM was started");
+				g_ui_OnOff=0U;
 			}
-			else if(onOff==0U)
+			else if(g_ui_OnOff==0U)
 			{
-				stopPWM();
-				sprintf(mess,"PWM was stopped");
-				onOff=1U;
+				PWM_Stop();
+				sprintf(g_ach_Mess,"PWM was stopped");
+				g_ui_OnOff=1U;
 			}
 			else
 			{
-				sprintf(mess,"Something is wrong. Please enter hlp for more details");
+				sprintf(g_ach_Mess,"Something is wrong. Please enter hlp for more details");
 			}
-			uartTransmit((uint8_t*)mess, strlen(mess),TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-			memset(mess,NULL,sizeof(mess));
+			UART_Transmit((uint8_t*)g_ach_Mess, strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
 			break;
 		}
-		case GPIO:
+		case EN_CMD_GPIO:
 		{
-			uint32_t pinnum;
-			uint32_t pin=1;
-			char port;
-			sscanf(arg,"%u",&pinnum);
-			sscanf(arg2,"%c",&port);
-			for(int i=0;i<pinnum;i++)
+			uint32_t 	l_ui_PinNumber;
+			uint32_t 	l_ui_RealPin=1;
+			char 			l_ch_Port;
+			sscanf(g_ach_Arg,"%u",&l_ui_PinNumber);
+			sscanf(g_ach_Arg2,"%c",&l_ch_Port);
+			for(int i=0;i<l_ui_PinNumber;i++)
 			{
-				pin*=2;
+				l_ui_RealPin*=2;
 			}
 			uint8_t status=0u;
-			switch(port)
+			switch(l_ch_Port)
 			{
 				case 'a':
 				{
-					HAL_GPIO_TogglePin(GPIOA, pin);
+					HAL_GPIO_TogglePin(GPIOA, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'b':
 				{
-					HAL_GPIO_TogglePin(GPIOB, pin);
+					HAL_GPIO_TogglePin(GPIOB, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'c':
 				{
-					HAL_GPIO_TogglePin(GPIOC, pin);
+					HAL_GPIO_TogglePin(GPIOC, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'd':
 				{
-					HAL_GPIO_TogglePin(GPIOD, pin);
+					HAL_GPIO_TogglePin(GPIOD, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'e':
 				{
-					
-					status++;HAL_GPIO_TogglePin(GPIOE, pin);
+					HAL_GPIO_TogglePin(GPIOE, l_ui_RealPin);
+					status++;
 					break;
 				}
 				case 'f':
 				{
-					HAL_GPIO_TogglePin(GPIOF, pin);
+					HAL_GPIO_TogglePin(GPIOF, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'g':
 				{
-					HAL_GPIO_TogglePin(GPIOG, pin);
+					HAL_GPIO_TogglePin(GPIOG, l_ui_RealPin);
 					status++;
 					break;
 				}
 				case 'h':
 				{
-					HAL_GPIO_TogglePin(GPIOH, pin);
+					HAL_GPIO_TogglePin(GPIOH, l_ui_RealPin);
 					status++;
 					break;
 				}
 			}
 			if(status==0U)
 			{
-				sprintf(mess,"Pin P%c%u doesn't exist",port,pinnum);
+				sprintf(g_ach_Mess,"Pin P%c%u doesn't exist",l_ch_Port,l_ui_PinNumber);
 			}
 			else
 			{
-				sprintf(mess,"Pin P%c%u has been toggled",port,pinnum);
+				sprintf(g_ach_Mess,"Pin P%c%u has been toggled",l_ch_Port,l_ui_PinNumber);
 			}
-			uartTransmit((uint8_t*)mess,strlen(mess),TRANSMIT_TIMEOUT);
-			uartTransmit((uint8_t*)newline, strlen(newline), TRANSMIT_TIMEOUT);
-			memset(mess,NULL,sizeof(mess));
+			UART_Transmit((uint8_t*)g_ach_Mess,strlen(g_ach_Mess),TRANSMIT_TIMEOUT);
+			UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
+			memset(g_ach_Mess,NULL,sizeof(g_ach_Mess));
 			break;
 		}
-		case UNKNOWN:
+		case EN_CMD_UNKNOWN:
 		{
-			aliases();
+			TERMINAL_Aliases();
 		}
   }
 }

@@ -46,6 +46,7 @@
 .\objects\terminal.o: pwm.h
 .\objects\terminal.o: adc.h
 .\objects\terminal.o: dac.h
+.\objects\terminal.o: spi5.h
+.\objects\terminal.o: L3GD20.h
 .\objects\terminal.o: D:\Programms\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\terminal.o: D:\Programms\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\terminal.o: spi5.h

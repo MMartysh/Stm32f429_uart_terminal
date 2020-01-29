@@ -3,11 +3,11 @@
 
 int main(void)
 {
-  terminalInit();  
+  TERMINAL_Init();  
   while (1)
   {
-		parse();
-		execCommand();
+		TERMINAL_Parse();
+		TERMINAL_ExecCommand();
   }
 }
 

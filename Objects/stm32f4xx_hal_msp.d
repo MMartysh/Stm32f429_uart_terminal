@@ -1,4 +1,4 @@
-.\objects\stm32f4xx_hal_msp.o: D:\Aproj\terminal\Stm32f429_uart_terminal-spi5\RTE\Device\STM32F429ZITx\STCubeGenerated\Src\stm32f4xx_hal_msp.c
+.\objects\stm32f4xx_hal_msp.o: D:\Aproj\terminal\Stm32f429_uart_terminal\RTE\Device\STM32F429ZITx\STCubeGenerated\Src\stm32f4xx_hal_msp.c
 .\objects\stm32f4xx_hal_msp.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\main.h
 .\objects\stm32f4xx_hal_msp.o: D:\Programms\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\stm32f4xx_hal_msp.o: .\RTE\Device\STM32F429ZITx\STCubeGenerated\Inc\stm32f4xx_hal_conf.h

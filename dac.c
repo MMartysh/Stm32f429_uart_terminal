@@ -1,7 +1,6 @@
 #include "dac.h"
 
 DAC_HandleTypeDef hdac;
-float valDac;
 
 void MX_DAC_Init(void)
 {
@@ -21,24 +20,24 @@ void MX_DAC_Init(void)
 
 }
 
-HAL_StatusTypeDef startDAC(void)
+HAL_StatusTypeDef DAC_Start(void)
 {
 	return HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
 }
-HAL_StatusTypeDef stopDAC(void)
+HAL_StatusTypeDef DAC_Stop(void)
 {
 	return HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
 }
 
-HAL_StatusTypeDef setValue(float valVolt)
+HAL_StatusTypeDef DAC_SetValue(float p_fl_ValVolt)
 {
-	startDAC();
+	DAC_Start();
 	uint8_t valByte;
-	valByte=(uint8_t)((valVolt/(float)3.0)*255);
-	stopDAC();
+	valByte=(uint8_t)((p_fl_ValVolt/(float)3.0)*255);
+	DAC_Stop();
 	return HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_8B_R, valByte);
 }
-uint32_t getValue(void)
+uint32_t DAC_GetValue(void)
 {
 	return HAL_DAC_GetValue(&hdac, DAC_CHANNEL_1);
 }

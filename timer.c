@@ -1,15 +1,15 @@
 #include "timer.h"
+
 TIM_HandleTypeDef htim3;
 
-uint32_t inputCaptureVal;
-uint32_t counterVal=0U;
-float currTime;
+uint32_t g_ui_InputCaptureVal;
+float g_fl_CurrTime;
 
 void SysTick_Handler(void)
 {
   HAL_IncTick();
-	currTime=(HAL_GetTick());
-  currTime/= (float)636.74694822;//converting ticks into seconds(needs testing)
+	g_fl_CurrTime=(HAL_GetTick());
+  g_fl_CurrTime/= (float)636.74694822;//converting ticks into seconds
 }
 
 void MX_TIM3_Init(void)
@@ -53,7 +53,7 @@ void MX_TIM3_Init(void)
 
 }
 
-HAL_StatusTypeDef startTimer(void)
+HAL_StatusTypeDef TIMER_Start(void)
 {
 	HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_Base_Start(&htim3);
@@ -69,12 +69,12 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
   UNUSED(htim);
 	if(htim->Instance==TIM3)
 	{
-			inputCaptureVal=__HAL_TIM_GetCounter(htim);
+			g_ui_InputCaptureVal=__HAL_TIM_GetCounter(htim);
 		__HAL_TIM_SetCounter(htim, 1);
 	}
 }
 
-float getTime(void)
+float TIMER_GetTime(void)
 {
-		return currTime;
+		return g_fl_CurrTime;
 }
