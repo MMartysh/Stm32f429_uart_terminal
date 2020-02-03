@@ -1,6 +1,14 @@
 #include "adc.h"
 
+//adc handler
+
 ADC_HandleTypeDef hadc1;
+
+
+/**
+* function which initializes adc peripheral according to the specified parameters
+*/
+
 
 void MX_ADC1_Init(void)
 {
@@ -31,14 +39,30 @@ void MX_ADC1_Init(void)
   }
 }
 
+/**
+ * function which starts adc
+ */
+
 void ADC_Start(void)
 {
 	HAL_ADC_Start(&hadc1);
 };
+
+/**
+ * function which stops adc
+ */
+
 void ADC_Stop(void)
 {
 	HAL_ADC_Stop(&hadc1);
 }
+
+/**
+ *function which returns adc value
+ *@param {uint32_t} time
+ *@return {uint32_t}
+ */
+
 uint32_t ADC_GetValue(uint32_t p_ui_Time)
 {
 	while(1)

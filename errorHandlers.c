@@ -1,40 +1,24 @@
 #include "errorHandlers.h"
 
+/*
+*function which initializes Error_Handler
+*turn on red led, programme has error
+*/
 
 void Error_Handler(void)
 {
+	/**
+	* function which initializes leds
+	*/
+	
 	LED_Initialize();
+	
+	/**
+	* turn on led
+	*/
+	
 	LED_On(0);
 	while(1)
 	{
 	}
 }
-/*void HardFault_Handler(void)
-{
-  while (1)
-  {
-  }
-}
-
-void MemManage_Handler(void)
-{
-  while (1)
-  {
-  }
-}
-
-void BusFault_Handler(void)
-{
-  while (1)
-  {
-  }
-}
-
-void UsageFault_Handler(void)
-{
-  while (1)
-  {
-  }
-}*/
-
-
