@@ -1,5 +1,9 @@
 #include "rcc.h"
 
+/**
+ * function which set up system
+ */
+ 
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
