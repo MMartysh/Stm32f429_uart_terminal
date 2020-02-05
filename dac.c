@@ -5,7 +5,7 @@
 DAC_HandleTypeDef hdac;
 
 /**
-* function which initializes dac peripheral according to the specified parameters
+*Initialization dac peripheral according to the specified parameters
 */
 
 void MX_DAC_Init(void)

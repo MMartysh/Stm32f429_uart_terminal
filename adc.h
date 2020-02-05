@@ -23,7 +23,7 @@ void 			ADC_Start(void);
 void 			ADC_Stop(void);
 
 /**
- * function which returns adc value
+ *function which returns adc value
  *@param {uint32_t} time
  *@return {uint32_t}
  */

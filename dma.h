@@ -4,7 +4,7 @@
 #include "stm32f4xx_hal.h"
 
 /**
- *Initializes the uart peripheral according to the specified parameters
+ *Initialization the uart peripheral according to the specified parameters
  */
  
 void MX_DMA_Init(void);

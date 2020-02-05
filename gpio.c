@@ -7,7 +7,7 @@
 GPIO_InitTypeDef GPIO_InitStruct;
 
 /**
- *Initializes the uart peripheral according to the specified parameters
+ *Initialization the uart peripheral according to the specified parameters
  */
  
 void MX_GPIO_Init(void)

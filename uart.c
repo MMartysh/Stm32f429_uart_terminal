@@ -6,7 +6,7 @@ UART_HandleTypeDef huart1;
 
 
 /**
- *Initializes the uart peripheral according to the specified parameters
+ *Initialization the uart peripheral according to the specified parameters
  */
  
 void MX_USART1_UART_Init(void)

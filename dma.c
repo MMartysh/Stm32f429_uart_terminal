@@ -9,7 +9,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /**
- *Initializes the dma peripheral according to the specified parameters
+ *Initialization the dma peripheral according to the specified parameters
  */
  
 void MX_DMA_Init(void) 

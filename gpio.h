@@ -4,7 +4,7 @@
 #include "stm32f4xx_hal.h"
 
 /**
- *Initializes the gpio
+ *Initializatin the gpio
  */
  
 void MX_GPIO_Init(void);

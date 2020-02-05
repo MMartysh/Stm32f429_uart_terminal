@@ -1,14 +1,31 @@
 #include "L3GD20.h"
 #include "spi5.h"
 
+/*
+*Initialization L3GD20
+*/
+
 void L3GD20_Init(void)
 {
 		SPI5_Write(L3GD20_CTRL_REG1_ADDR,0x0F);
 }
+
+/*
+*Deinitialization L3GD20
+*/
+
 void L3GD20_DeInit(void)
 {
 		SPI5_Write(L3GD20_CTRL_REG1_ADDR,0x07);
 }
+
+/**
+ *function which returns X rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
+
 float L3GD20_GetAngularRateX(float p_fl_Sensitivity)
 {
 	float 	l_fl_angle;
@@ -23,6 +40,14 @@ float L3GD20_GetAngularRateX(float p_fl_Sensitivity)
 	l_fl_angle = (float)l_i_XDataRaw/p_fl_Sensitivity;
 	return l_fl_angle;
 }
+
+
+/**
+ *function which returns Y rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
 
 float L3GD20_GetAngularRateY(float p_fl_Sensitivity)
 {
@@ -39,6 +64,13 @@ float L3GD20_GetAngularRateY(float p_fl_Sensitivity)
 	return l_fl_angle;
 }
 
+
+/**
+ *function which returns Z rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
 float L3GD20_GetAngularRateZ(float p_fl_Sensitivity)
 {
 	float l_fl_angle;

@@ -12,7 +12,7 @@ TIM_OC_InitTypeDef sConfigOC = {0};
 
 
 /**
- *Initializes tim1 and pwm
+ *Initialization tim1 and pwm
  */
 
 void MX_TIM1_Init(void)

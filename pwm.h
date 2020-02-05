@@ -5,13 +5,13 @@
 #include "errorHandlers.h"
 
 /**
- * Initializes tim1 to configure the peripheral instances according to the user configuration
+ * Initialization tim1 to configure the peripheral instances according to the user configuration
  */
  
 void 			HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /**
- *Initializes tim1 and pwm
+ *Initialization tim1 and pwm
  */
  
 void 			MX_TIM1_Init(void);
