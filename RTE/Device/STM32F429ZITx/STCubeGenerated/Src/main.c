@@ -3,14 +3,21 @@
 
 int main(void)
 {
-  TERMINAL_Init();  
+  terminalInit();  
   while (1)
   {
-		TERMINAL_Parse();
-		TERMINAL_ExecCommand();
+	parse();
+	execCommand();
   }
 }
-
+void Error_Handler(void)
+{
+ LED_Initialize();
+ HAL_GPIO_WritePin(LED_PIN[13].port, LED_PIN[13].pin,            GPIO_PIN_SET);
+ while(1)
+ {
+ }
+}
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number

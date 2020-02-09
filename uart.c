@@ -31,7 +31,14 @@ void MX_USART1_UART_Init(void)
 
 HAL_StatusTypeDef UART_Transmit(uint8_t *p_pui_Data,uint16_t p_ui_Size, uint32_t p_ui_Timeout)
 {
-	return HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	if(HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!=HAL_OK)
+	{
+		Error_Handler();
+	}
+	
+	else{
+		return HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	}
 }
 
 /**
@@ -40,7 +47,14 @@ HAL_StatusTypeDef UART_Transmit(uint8_t *p_pui_Data,uint16_t p_ui_Size, uint32_t
 
 HAL_StatusTypeDef UART_Receive(uint8_t *p_pui_Data,uint16_t p_ui_Size, uint32_t p_ui_Timeout)
 {
-	return HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	if(HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!=HAL_OK)
+	{
+		Error_Handler();
+	}
+	
+	else{
+		return HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	}
 }
 
 
