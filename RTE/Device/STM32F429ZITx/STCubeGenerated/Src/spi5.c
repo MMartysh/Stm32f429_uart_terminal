@@ -1,6 +1,14 @@
 #include "spi5.h"
 
+//spi handler
+
 SPI_HandleTypeDef hspi5;
+
+/**
+*function which reads data from spi
+*@param {uint8_t} p_ui_Address
+*@return {uint8_t}
+*/
 
 void SPI5_Write(uint8_t p_ui_Address, uint8_t p_ui_Data)
 {
@@ -9,6 +17,14 @@ void SPI5_Write(uint8_t p_ui_Address, uint8_t p_ui_Data)
   HAL_SPI_Transmit(&hspi5,&p_ui_Data,1,SPI_TIMEOUT);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
 } 
+
+
+/**
+*function which reads data from spi
+*@param {uint8_t} p_ui_Address
+*@return {uint8_t}
+*/
+
 uint8_t SPI5_Read(uint8_t p_ui_Address)
 {
 	uint8_t data;
@@ -19,6 +35,10 @@ uint8_t SPI5_Read(uint8_t p_ui_Address)
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
 	return data;
 }
+
+/**
+*Initialization spi peripheral according to the specified parameters
+*/
 
 void MX_SPI5_Init(void)
 {

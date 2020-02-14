@@ -1,9 +1,16 @@
 #include "timer.h"
 
+//dac handler
+
 TIM_HandleTypeDef htim3;
 
-uint32_t g_ui_InputCaptureVal;
+
+//current time (from start programme)
 float g_fl_CurrTime;
+
+/**
+ *function which generates interrupt
+*/
 
 void SysTick_Handler(void)
 {
@@ -11,6 +18,10 @@ void SysTick_Handler(void)
 	g_fl_CurrTime=(HAL_GetTick());
   g_fl_CurrTime/= (float)636.74694822;//converting ticks into seconds
 }
+
+/**
+ * function which initializes tim3
+ */
 
 void MX_TIM3_Init(void)
 {
@@ -50,8 +61,12 @@ void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
-
 }
+
+/**
+ *function which starts tim3
+ *@return {HAL_StatusTypeDef}
+ */
 
 HAL_StatusTypeDef TIMER_Start(void)
 {
@@ -59,20 +74,12 @@ HAL_StatusTypeDef TIMER_Start(void)
 	HAL_TIM_Base_Start(&htim3);
 	return HAL_TIM_Base_Start_IT(&htim3);
 }
-void TIM3_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&htim3);
-}
 
-void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
-{
-  UNUSED(htim);
-	if(htim->Instance==TIM3)
-	{
-			g_ui_InputCaptureVal=__HAL_TIM_GetCounter(htim);
-		__HAL_TIM_SetCounter(htim, 1);
-	}
-}
+
+/**
+ * function which returns time from start programme
+ *@return {float}
+ */
 
 float TIMER_GetTime(void)
 {

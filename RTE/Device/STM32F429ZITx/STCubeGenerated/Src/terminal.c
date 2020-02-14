@@ -15,6 +15,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+/** 
+  * @brief Command format structure (name of command, argument1, argument2, argument3)
+  */
 enum enTokenCategory
 {
 	EN_TC_OPERATION = 0,
@@ -22,6 +26,10 @@ enum enTokenCategory
 	EN_TC_ARGUMENT2 = 2,
 	EN_TC_ARGUMENT3 = 3
 };
+
+/** 
+  * @brief List of commands
+  */
 enum enCommand
 {
 	EN_CMD_ECHO 		= 0,
@@ -35,19 +43,25 @@ enum enCommand
 	EN_CMD_UNKNOWN 	= 8
 };
 
-char 		g_ach_Newline[] = "\r\n";
-char 		g_ach_Operation[COMMANDS_LENGTH];
-char 		g_ach_Arg[MAX_ARGUMENT_LENGTH];
-char 		g_ach_Arg2[MAX_ARGUMENT_LENGTH];
-int  		g_i_CommandNum = EN_TC_OPERATION;
+char 		g_ach_Newline[] = "\r\n"; //New line
+char 		g_ach_Operation[COMMANDS_LENGTH];//Command ame
+char 		g_ach_Arg[MAX_ARGUMENT_LENGTH];//argument1
+char 		g_ach_Arg2[MAX_ARGUMENT_LENGTH];//argument2
+int  		g_i_CommandNum = EN_TC_OPERATION;// number of command
 uint8_t g_ui_OnOff=1U;
-char 		g_ach_Mess[55];
-char g_ach_CommandArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] =
+char 		g_ach_Mess[55];//Data, that will be transmited by uart
+char g_ach_CommandArr[NUMBER_OF_COMMANDS][COMMANDS_LENGTH] = //List of commands
 {
   { "echo" },{ "tim" },{ "hlp" },
 	{ "dac" },{ "adc" },{ "spi" },
 	{ "pwm" }, {"gpio"}
 };
+
+
+/**
+*Initialization terminal(includes initialization all modules)
+*/
+
 void TERMINAL_Init(void)
 {
 	HAL_Init();
@@ -70,6 +84,11 @@ void TERMINAL_Init(void)
 	UART_Transmit((uint8_t*)"Enter \"hlp\" to see the list of available commands",49,TRANSMIT_TIMEOUT);
 	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 }
+
+/**
+*function, which outputs similar commands, if user enter wrong command
+*/
+
 void TERMINAL_Aliases(void)
 {
 	sprintf(g_ach_Mess,"Command not found, maybe you mean: ");
@@ -85,6 +104,10 @@ void TERMINAL_Aliases(void)
   }
 }
 
+/**
+*function, which separates string on command name, argument1, argument2
+*/
+
 void TERMINAL_Echo()
 {
 	UART_Transmit((uint8_t*)g_ach_Arg, strlen(g_ach_Arg), TRANSMIT_TIMEOUT);
@@ -92,6 +115,11 @@ void TERMINAL_Echo()
 	UART_Transmit((uint8_t*)g_ach_Arg2, strlen(g_ach_Arg2), TRANSMIT_TIMEOUT);
 	UART_Transmit((uint8_t*)g_ach_Newline, strlen(g_ach_Newline), TRANSMIT_TIMEOUT);
 }
+
+/**
+*function, which output all command
+*/
+
 void TERMINAL_Help(void)
 {
   for (int i = 0; i<NUMBER_OF_COMMANDS; i++)
@@ -101,6 +129,10 @@ void TERMINAL_Help(void)
   }
 }
 
+/**
+*function, which separates string on command name and arguments
+*identify command and run it
+*/
 
 void TERMINAL_Parse(void)
 {
@@ -150,6 +182,11 @@ void TERMINAL_Parse(void)
 			}
 		}
 }
+
+/**
+*function, which run commands
+*/
+
 void TERMINAL_ExecCommand(void)
 {
   switch (g_i_CommandNum)

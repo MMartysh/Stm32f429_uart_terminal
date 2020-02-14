@@ -31,13 +31,44 @@
 #define L3GD20_INT1_TSH_ZH_ADDR       0x36  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_TSH_ZL_ADDR       0x37  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_DURATION_ADDR     0x38  /* Interrupt 1 DURATION register */
-#define SENSITIVITY_NONE 								1		
-#define SENSITIVITY_250 							114.285
+#define SENSITIVITY_NONE 								1		/*Sensitive off*/
+#define SENSITIVITY_250 							114.285 /*Level sensitive*/
 
+
+/**
+ *function which returns X rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
 float L3GD20_GetAngularRateX(float p_fl_Sensitivity);
+
+/**
+ *function which returns Y rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
 float L3GD20_GetAngularRateY(float p_fl_Sensitivity);
+
+/**
+ *function which returns Z rotation
+ *@param {float} p_fl_Sensitivity
+ *@return {float}
+ */
+ 
 float L3GD20_GetAngularRateZ(float p_fl_Sensitivity);
+
+/*
+*Initialization L3GD20
+*/
+
 void 	L3GD20_Init(void);
+
+/*
+*Deinitialization L3GD20
+*/
+
 void 	L3GD20_DeInit(void);
 
 #endif

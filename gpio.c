@@ -1,7 +1,15 @@
 #include "gpio.h"
 
+/** 
+* @brief GPIO Init structure 
+*/ 
+
 GPIO_InitTypeDef GPIO_InitStruct;
 
+/**
+ *Initialization the uart peripheral according to the specified parameters
+ */
+ 
 void MX_GPIO_Init(void)
 {
 	__HAL_RCC_GPIOA_CLK_ENABLE();
