@@ -1,3 +1,5 @@
+#include "stm32f4xx_hal.h"
+#include "errorHandlers.h"
 #include "pwm.h"
 
 //pwm handler
@@ -11,11 +13,18 @@ TIM_HandleTypeDef htim1;
 TIM_OC_InitTypeDef sConfigOC = {0};
 
 
-/**
- *Initialization tim1 and pwm
+ /* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Initializes clocks for GPIO ports and sets up settings for PC1 pin
 
-void MX_TIM1_Init(void)
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void TIM1_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -72,23 +81,35 @@ void MX_TIM1_Init(void)
 
 }
 
-
-/**
- * function which starts pwm
-	*@param {uint32_t} dutyCycle
+ /* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Starts PWM on Channel 1 with given duty cycle
 
+ @param[in]     p_ui_DutyCycle PWM duty cycle in percents 
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 void PWM_Start(uint32_t p_ui_DutyCycle)
 {
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	htim1.Instance->CCR1=p_ui_DutyCycle;
+	htim1.Instance->CCR1 = p_ui_DutyCycle;
 }
 
-/**
- * function which stops pwm
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Stops PWM on Channel 1 
 
-void PWM_Stop()
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void PWM_Stop(void)
 {
 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
 }

@@ -1,10 +1,18 @@
+#include "stm32f4xx_hal.h"
+#include "Board_LED.h"
 #include "errorHandlers.h"
 
-/*
-*function which initializes Error_Handler
-*turn on red led, programme has error
-*/
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Handles error states
 
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 void Error_Handler(void)
 {
 	/**

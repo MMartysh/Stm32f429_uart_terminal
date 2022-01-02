@@ -1,3 +1,5 @@
+#include "stm32f4xx_hal.h"
+#include "errorHandlers.h"
 #include "adc.h"
 
 //adc handler
@@ -5,12 +7,18 @@
 ADC_HandleTypeDef hadc1;
 
 
-/**
-* function which initializes adc peripheral according to the specified parameters
+ /* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Initializes ADC1
+
+ @param         None.
+
+ @return        None. 
 */
-
-
-void MX_ADC1_Init(void)
+/* ----------------------------------------------------------------------------
+ */
+void ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
   hadc1.Instance = ADC1;
@@ -39,36 +47,55 @@ void MX_ADC1_Init(void)
   }
 }
 
-/**
- * function which starts adc
+ /* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Starts ADC on channel 1
 
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 void ADC_Start(void)
 {
 	HAL_ADC_Start(&hadc1);
 };
 
-/**
- * function which stops adc
+ /* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Stops ADC on channel 1
 
+ @param        None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 void ADC_Stop(void)
 {
 	HAL_ADC_Stop(&hadc1);
 }
 
-/**
- *function which returns adc value
- *@param {uint32_t} time
- *@return {uint32_t}
+ /* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Reads value from ADC channel 1 in polling blocking mode
 
+ @param[in]     p_ui_Time convertion timeout.
+
+ @return        ADC value on channel 1. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 uint32_t ADC_GetValue(uint32_t p_ui_Time)
 {
 	while(1)
 	{
 		ADC_Start();
-		if(HAL_ADC_PollForConversion(&hadc1,p_ui_Time)==HAL_OK)
+		if(HAL_ADC_PollForConversion(&hadc1,p_ui_Time) == HAL_OK)
 		{
 			return HAL_ADC_GetValue(&hadc1);
 		}

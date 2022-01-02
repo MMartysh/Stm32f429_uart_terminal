@@ -1,16 +1,23 @@
+#include "stm32f4xx_hal.h"
 #include "gpio.h"
 
 /** 
 * @brief GPIO Init structure 
 */ 
-
 GPIO_InitTypeDef GPIO_InitStruct;
 
-/**
- *Initialization the uart peripheral according to the specified parameters
+ /* ----------------------------------------------------------------------------
  */
- 
-void MX_GPIO_Init(void)
+/*!
+ @brief         Initializes clocks for GPIO ports and sets up settings for PC1 pin
+
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void GPIO_Init(void)
 {
 	__HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();

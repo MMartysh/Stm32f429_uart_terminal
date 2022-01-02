@@ -1,9 +1,18 @@
+#include "stm32f4xx_hal.h"
+#include "errorHandlers.h"
 #include "rcc.h"
 
-/**
- * function which set up system
+/* ----------------------------------------------------------------------------
  */
- 
+/*!
+ @brief         Set up configs for chip clocks
+
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};

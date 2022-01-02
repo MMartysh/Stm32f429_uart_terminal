@@ -1,3 +1,4 @@
+#include "stm32f4xx_hal.h"
 #include "dma.h"
 
 //dma handler uart_rx
@@ -8,11 +9,18 @@ DMA_HandleTypeDef hdma_usart1_rx;
 
 DMA_HandleTypeDef hdma_usart1_tx;
 
-/**
- *Initialization the dma peripheral according to the specified parameters
+/* ----------------------------------------------------------------------------
  */
- 
-void MX_DMA_Init(void) 
+/*!
+ @brief         Initializes DMA channels
+
+ @param         None.
+
+ @return        None.
+*/
+/* ----------------------------------------------------------------------------
+ */
+void DMA_Init(void) 
 {
   __HAL_RCC_DMA2_CLK_ENABLE();
   HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 0, 0);
@@ -21,19 +29,33 @@ void MX_DMA_Init(void)
   HAL_NVIC_EnableIRQ(DMA2_Stream7_IRQn);
 }
 
-/**
- * function which reads data from uart
-*/
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Set up DMA channel for UART1 RX
 
+ @param         None.
+
+ @return        None.
+*/
+/* ----------------------------------------------------------------------------
+ */
 void DMA2_Stream2_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&hdma_usart1_rx);
 }
 
-/**
- * function which sends data from uart
-*/
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Set up DMA channel for UART1 TX
 
+ @param         None.
+
+ @return        None.
+*/
+/* ----------------------------------------------------------------------------
+ */
 void DMA2_Stream7_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&hdma_usart1_tx);

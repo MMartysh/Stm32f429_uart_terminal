@@ -1,15 +1,26 @@
+#include "stm32f4xx_hal.h"
+#include "errorHandlers.h"
 #include "uart.h"
-
-//uart  handler
 
 UART_HandleTypeDef huart1;
 
 
-/**
- *Initialization the uart peripheral according to the specified parameters
+/* ----------------------------------------------------------------------------
  */
- 
-void MX_USART1_UART_Init(void)
+/*!
+ @brief         Initializes UART with predefined parameters:
+                      Baud rate - 115200
+                      Wordlength - 8bit
+                      Stopbits - 1
+                      Parity - None
+
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void UART_Init(void)
 {
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
@@ -25,31 +36,51 @@ void MX_USART1_UART_Init(void)
   }
 }
 
-/**
- * function which sends data to uart
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Transmits data via UART in polling blocking mode
 
-HAL_StatusTypeDef UART_Transmit(uint8_t *p_pui_Data,uint16_t p_ui_Size, uint32_t p_ui_Timeout)
+ @param[in]     p_pui_Data pointer to a buffer to transmit data from.
+ @param[in]     p_ui_Size transmit data size.
+ @param[in]     p_ui_Timeout Operation timeout.
+
+ @return        Status of the operation. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+HAL_StatusTypeDef UART_Transmit(uint8_t *p_pui_Data, uint16_t p_ui_Size, uint32_t p_ui_Timeout)
 {
-	while((HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!=HAL_OK) || (HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!= HAL_TIMEOUT))
+  HAL_StatusTypeDef ret = HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	if(ret != HAL_OK && ret != HAL_TIMEOUT)
 	{
 		Error_Handler();
 	}
 	
-		return HAL_UART_Transmit(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+		return ret;
 }
 
-/**
- * function which gets data to uart
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Receives the data via UART in polling blocking mode
 
-HAL_StatusTypeDef UART_Receive(uint8_t *p_pui_Data,uint16_t p_ui_Size, uint32_t p_ui_Timeout)
+ @param[out]    p_pui_Data pointer to store received data to.
+ @param[in]     p_ui_Size received data size.
+ @param[in]     p_ui_Timeout Operation timeout.
+
+ @return        Status of the operation. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+HAL_StatusTypeDef UART_Receive(uint8_t *p_pui_Data, uint16_t p_ui_Size, uint32_t p_ui_Timeout)
 {
-	while((HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!=HAL_OK) || (HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout)!= HAL_TIMEOUT))
+  HAL_StatusTypeDef ret = HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+	if(ret != HAL_OK && ret != HAL_TIMEOUT)
 	{
 		Error_Handler();
 	}
 	
-		return HAL_UART_Receive(&huart1, p_pui_Data, p_ui_Size,p_ui_Timeout);
+		return ret;
 }
 

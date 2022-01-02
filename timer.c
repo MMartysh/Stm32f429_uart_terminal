@@ -1,3 +1,5 @@
+#include "stm32f4xx_hal.h"
+#include "errorHandlers.h"
 #include "timer.h"
 
 //dac handler
@@ -6,24 +8,38 @@ TIM_HandleTypeDef htim3;
 
 
 //current time (from start programme)
-float g_fl_CurrTime;
+static float g_fl_CurrTime;
 
-/**
- *function which generates interrupt
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Interrupt handler
+
+ @param         None.
+
+ @return        None. 
 */
-
+/* ----------------------------------------------------------------------------
+ */
 void SysTick_Handler(void)
 {
   HAL_IncTick();
 	g_fl_CurrTime=(HAL_GetTick());
-  g_fl_CurrTime/= (float)636.74694822;//converting ticks into seconds
+  g_fl_CurrTime /= (float)636.74694822;//converting ticks into seconds
 }
 
-/**
- * function which initializes tim3
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Initializes TIM3
 
-void MX_TIM3_Init(void)
+ @param         None.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void TIM3_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -63,11 +79,17 @@ void MX_TIM3_Init(void)
   }
 }
 
-/**
- *function which starts tim3
- *@return {HAL_StatusTypeDef}
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Initializes TIM3
 
+ @param         None.
+
+ @return        Status of the operation. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 HAL_StatusTypeDef TIMER_Start(void)
 {
 	HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
@@ -76,11 +98,17 @@ HAL_StatusTypeDef TIMER_Start(void)
 }
 
 
-/**
- * function which returns time from start programme
- *@return {float}
+/* ----------------------------------------------------------------------------
  */
+/*!
+ @brief         Dumb function to return current time variable (maybe replace this function later)
 
+ @param         None.
+
+ @return        Time from program start. 
+*/
+/* ----------------------------------------------------------------------------
+ */
 float TIMER_GetTime(void)
 {
 		return g_fl_CurrTime;

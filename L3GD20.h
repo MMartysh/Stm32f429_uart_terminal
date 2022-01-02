@@ -1,9 +1,6 @@
 #ifndef L3GD20_H
 #define L3GD20_H
 
-#include "stm32f4xx_hal.h"
-#include "errorHandlers.h"
-
 #define L3GD20_WHO_AM_I_ADDR          0x0F  /* device identification register */
 #define L3GD20_CTRL_REG1_ADDR         0x20  /* Control register 1 */
 #define L3GD20_CTRL_REG2_ADDR         0x21  /* Control register 2 */
@@ -31,44 +28,13 @@
 #define L3GD20_INT1_TSH_ZH_ADDR       0x36  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_TSH_ZL_ADDR       0x37  /* Interrupt 1 Threshold Z register */
 #define L3GD20_INT1_DURATION_ADDR     0x38  /* Interrupt 1 DURATION register */
-#define SENSITIVITY_NONE 								1		/*Sensitive off*/
-#define SENSITIVITY_250 							114.285 /*Level sensitive*/
+#define SENSITIVITY_NONE 								1		/*Sensitivity off*/
+#define SENSITIVITY_250 							114.285 /*Level sensitivity*/
 
-
-/**
- *function which returns X rotation
- *@param {float} p_fl_Sensitivity
- *@return {float}
- */
- 
 float L3GD20_GetAngularRateX(float p_fl_Sensitivity);
-
-/**
- *function which returns Y rotation
- *@param {float} p_fl_Sensitivity
- *@return {float}
- */
- 
 float L3GD20_GetAngularRateY(float p_fl_Sensitivity);
-
-/**
- *function which returns Z rotation
- *@param {float} p_fl_Sensitivity
- *@return {float}
- */
- 
 float L3GD20_GetAngularRateZ(float p_fl_Sensitivity);
-
-/*
-*Initialization L3GD20
-*/
-
 void 	L3GD20_Init(void);
-
-/*
-*Deinitialization L3GD20
-*/
-
 void 	L3GD20_DeInit(void);
 
 #endif

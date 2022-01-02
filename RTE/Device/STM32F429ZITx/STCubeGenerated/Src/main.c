@@ -6,8 +6,8 @@ int main(void)
   TERMINAL_Init();  
   while (1)
   {
-	TERMINAL_Parse();
-	TERMINAL_ExecCommand();
+    TERMINAL_Parse();
+    TERMINAL_ExecCommand();
   }
 }
 
