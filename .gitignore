@@ -1,0 +1,9 @@
+# Build directory, containing listings and objects
+build/
+# Debug configuration data
+DebugConfig/
+# Keil specific files
+EventRecorderStub.scvd
+
+uart.uvguix.MaksymMartysh
+uart.uvguix.MaksymMartysh
