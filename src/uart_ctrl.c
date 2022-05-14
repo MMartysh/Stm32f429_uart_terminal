@@ -23,18 +23,18 @@ UART_HandleTypeDef uartPeriphHandler;
  */
 void uartInit(void)
 {
-  uartPeriphHandler.Instance = USART1;
-  uartPeriphHandler.Init.BaudRate = 115200;
-  uartPeriphHandler.Init.WordLength = UART_WORDLENGTH_8B;
-  uartPeriphHandler.Init.StopBits = UART_STOPBITS_1;
-  uartPeriphHandler.Init.Parity = UART_PARITY_NONE;
-  uartPeriphHandler.Init.Mode = UART_MODE_TX_RX;
-  uartPeriphHandler.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  uartPeriphHandler.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&uartPeriphHandler) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    uartPeriphHandler.Instance = USART1;
+    uartPeriphHandler.Init.BaudRate = 115200;
+    uartPeriphHandler.Init.WordLength = UART_WORDLENGTH_8B;
+    uartPeriphHandler.Init.StopBits = UART_STOPBITS_1;
+    uartPeriphHandler.Init.Parity = UART_PARITY_NONE;
+    uartPeriphHandler.Init.Mode = UART_MODE_TX_RX;
+    uartPeriphHandler.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    uartPeriphHandler.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&uartPeriphHandler) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 
 /* ----------------------------------------------------------------------------
@@ -52,12 +52,12 @@ void uartInit(void)
  */
 HAL_StatusTypeDef uartTransmit(uint8_t *txData, uint16_t size, uint32_t timeout)
 {
-  HAL_StatusTypeDef ret = HAL_UART_Transmit(&uartPeriphHandler, txData, size, timeout);
-	if(ret != HAL_OK && ret != HAL_TIMEOUT)
-	{
-		Error_Handler();
-	}
-  return ret;
+    HAL_StatusTypeDef ret = HAL_UART_Transmit(&uartPeriphHandler, txData, size, timeout);
+    if(ret != HAL_OK && ret != HAL_TIMEOUT)
+    {
+        Error_Handler();
+    }
+    return ret;
 }
 
 /* ----------------------------------------------------------------------------
@@ -75,29 +75,29 @@ HAL_StatusTypeDef uartTransmit(uint8_t *txData, uint16_t size, uint32_t timeout)
  */
 HAL_StatusTypeDef uartReceive(uint8_t *rxData, uint16_t size, uint32_t timeout)
 {
-  HAL_StatusTypeDef ret = HAL_UART_Receive(&uartPeriphHandler, rxData, size,timeout);
-	if(ret != HAL_OK && ret != HAL_TIMEOUT)
-	{
-		Error_Handler();
-	}
-	return ret;
+    HAL_StatusTypeDef ret = HAL_UART_Receive(&uartPeriphHandler, rxData, size,timeout);
+    if(ret != HAL_OK && ret != HAL_TIMEOUT)
+    {
+        Error_Handler();
+    }
+    return ret;
 }
 
 int32_t uartSendChar(char c)
 {
-  if(HAL_UART_Transmit(&uartPeriphHandler, (uint8_t*)&c, 1, 2) != HAL_OK)
-  {
-    return EOF;
-  }
-  return c;
+    if(HAL_UART_Transmit(&uartPeriphHandler, (uint8_t*)&c, 1, 2) != HAL_OK)
+    {
+        return EOF;
+    }
+    return c;
 }
 
 int32_t uartGetChar(void)
 {
-  int32_t c = EOF;
-  if(__HAL_UART_GET_FLAG(&uartPeriphHandler, UART_FLAG_RXNE) != HAL_OK)
-  {
-    c = (uint8_t)(READ_BIT(uartPeriphHandler.Instance->DR, 0x1FF) & 0xFF);
-  }
-  return c;
+    int32_t c = EOF;
+    if(__HAL_UART_GET_FLAG(&uartPeriphHandler, UART_FLAG_RXNE) != HAL_OK)
+    {
+        c = (uint8_t)(READ_BIT(uartPeriphHandler.Instance->DR, 0x1FF) & 0xFF);
+    }
+    return c;
 }

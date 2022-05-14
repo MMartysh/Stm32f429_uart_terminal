@@ -23,20 +23,19 @@ DAC_HandleTypeDef hdac;
  */
 void dacInit(void)
 {
-  DAC_ChannelConfTypeDef sConfig = {0};
+    DAC_ChannelConfTypeDef sConfig = {0};
 
-  hdac.Instance = DAC;
-  if (HAL_DAC_Init(&hdac) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
-  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
-  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
+    hdac.Instance = DAC;
+    if (HAL_DAC_Init(&hdac) != HAL_OK)
+    {
+        Error_Handler();
+    }
+    sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+    sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+    if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 
  /* ----------------------------------------------------------------------------
@@ -119,14 +118,14 @@ uint32_t dacGetValue(void)
  */
 bool terminalDacOutput(uint8_t argc, char **argv)
 {
-  (void)argc;
-  uint32_t valVolt;
-  strtol(argv[1], NULL, valVolt);
-  dacStart();
-  dacSetValue(valVolt);
-  printf("DAC value: %d\n", dacGetValue());
-  dacStop();
-  return true;
+    (void)argc;
+    uint32_t valVolt;
+    strtol(argv[1], NULL, valVolt);
+    dacStart();
+    dacSetValue(valVolt);
+    printf("DAC value: %d\n", dacGetValue());
+    dacStop();
+    return true;
 }
 
 __attribute__((constructor))

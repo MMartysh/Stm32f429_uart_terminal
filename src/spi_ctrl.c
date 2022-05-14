@@ -1,28 +1,29 @@
 #include "stm32f4xx_hal.h"
 #include "errorHandlers.h"
 #include "spi_ctrl.h"
-
+#define SPI_TIMEOUT 50    /*Spi timeout duration*/
+#define SPI_READ    0x80	/*Accelerometer address*/
 //spi handler
-SPI_HandleTypeDef hspi5;
+SPI_HandleTypeDef spiHandler;
 
  /* ----------------------------------------------------------------------------
  */
 /*!
  @brief         Writes 1 byte of data via SPI5
 
- @param[in]     p_ui_Address register address to write to.
- @param[in]     p_ui_Data data to be written.
+ @param[in]     address register address to write to.
+ @param[in]     data data to be written.
 
  @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
-void spiWriteByte(uint8_t p_ui_Address, uint8_t p_ui_Data)
+void spiWriteByte(uint8_t address, uint8_t data)
 {
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
-  HAL_SPI_Transmit(&hspi5, &p_ui_Address, 1, SPI_TIMEOUT);
-  HAL_SPI_Transmit(&hspi5, &p_ui_Data, 1, SPI_TIMEOUT);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
+    HAL_SPI_Transmit(&spiHandler, &address, 1, SPI_TIMEOUT);
+    HAL_SPI_Transmit(&spiHandler, &data, 1, SPI_TIMEOUT);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
 } 
 
 
@@ -31,19 +32,19 @@ void spiWriteByte(uint8_t p_ui_Address, uint8_t p_ui_Data)
 /*!
  @brief         Reads 1 byte of data via SPI5
 
- @param[in]     p_ui_Address register address to read from.
+ @param[in]     address register address to read from.
 
  @return        One byte of data from given register. 
 */
 /* ----------------------------------------------------------------------------
  */
-uint8_t spiReadByte(uint8_t p_ui_Address)
+uint8_t spiReadByte(uint8_t address)
 {
 	uint8_t data;
-	p_ui_Address = p_ui_Address | SPI_READ;
+	address = address | SPI_READ;
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
-	HAL_SPI_Transmit(&hspi5,&p_ui_Address,1,SPI_TIMEOUT);
-	HAL_SPI_Receive(&hspi5,&data,1,SPI_TIMEOUT);
+	HAL_SPI_Transmit(&spiHandler, &address,1,SPI_TIMEOUT);
+	HAL_SPI_Receive(&spiHandler, &data,1,SPI_TIMEOUT);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
 	return data;
 }
@@ -61,22 +62,22 @@ uint8_t spiReadByte(uint8_t p_ui_Address)
  */
 void spiInit(void)
 {
-  hspi5.Instance = SPI5;
-  hspi5.Init.Mode = SPI_MODE_MASTER;
-  hspi5.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi5.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi5.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi5.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi5.Init.NSS = SPI_NSS_SOFT;
-  hspi5.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
-  hspi5.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi5.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi5.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi5.Init.CRCPolynomial = 10;
-  if (HAL_SPI_Init(&hspi5) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    spiHandler.Instance = SPI5;
+    spiHandler.Init.Mode = SPI_MODE_MASTER;
+    spiHandler.Init.Direction = SPI_DIRECTION_2LINES;
+    spiHandler.Init.DataSize = SPI_DATASIZE_8BIT;
+    spiHandler.Init.CLKPolarity = SPI_POLARITY_LOW;
+    spiHandler.Init.CLKPhase = SPI_PHASE_1EDGE;
+    spiHandler.Init.NSS = SPI_NSS_SOFT;
+    spiHandler.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+    spiHandler.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    spiHandler.Init.TIMode = SPI_TIMODE_DISABLE;
+    spiHandler.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    spiHandler.Init.CRCPolynomial = 10;
+    if (HAL_SPI_Init(&spiHandler) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 
 
