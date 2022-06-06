@@ -9,9 +9,9 @@
 
 static const uint16_t SI7021_ADDRESS = (0x40<<1);           // Si7021 I2C address
 
-static uint64_t si7021ReadId(void)
+uint64_t si7021ReadId(void)
 {
-    uint8_t id[2][4];
+    uint8_t id[2][4] = {0};
     uint64_t serialNum = 0;
     bool opStatus = true;
     uint16_t idRegReadCommand[] = {(SI7021_READ_ID1_L | (SI7021_READ_ID1_H << 8)),

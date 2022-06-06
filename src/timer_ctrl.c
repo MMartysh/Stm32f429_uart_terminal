@@ -5,13 +5,123 @@
 #include "timer_ctrl.h"
 #include "terminal.h"
 
-//dac handler
+#define SYSTEM_CLK_DIVIDER 1600
+static timerHandler *timerHead;
+void timerInit(void)
+{
+    SysTick_Config(SystemCoreClock / SYSTEM_CLK_DIVIDER);
+}
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Do the counter check and call the timer function
 
-TIM_HandleTypeDef htim3;
+ @param         None.
 
-//current time (from start programme)
-static float currentTime;
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void timerPerformCheck(void)
+{
+    if(timerHead == NULL)
+    {
+        return;
+    }
+    //begin from the list head
+    static timerHandler *head;
+    //if head exists
+    if (head != NULL)
+    { 
+        //if counter is 0
+        if(head->counter == 0)
+        {
+            //call the function
+            head->callback();
+            //reset counter
+            head->counter = head->periodMs;
+        }
+        //goto next node
+        if(head->next != NULL)
+        {
+            head = head->next;
+        }
+    }
+    else
+    {
+        //go to list head
+        head = timerHead;
+    }
+}
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Do the counter check and call the timer function
 
+ @param[in]     timerToAdd timer handler to apeend to the list
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void timerAdd(timerHandler *timerToAdd)
+{
+    //begin from the list head
+    timerHandler *head = timerHead;
+    static uint32_t timerId = 0;
+    timerToAdd->next = NULL;
+    //if head exists
+    if (head != NULL)
+    { 
+        //goto the last node
+        while(head->next != NULL)
+        {
+            head = head->next;
+        }
+        //insert command at the end of the list
+        head->next = timerToAdd;
+        //set counter
+        head->counter = head->periodMs;
+        
+    }
+    else
+    {
+        //make command a head of the list
+        timerHead = timerToAdd; 
+    }
+    head->id = ++timerId;
+}
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Remove timer from list
+
+ @param[in]     timerToRemove timer handler to remove from list.
+
+ @return        None. 
+*/
+/* ----------------------------------------------------------------------------
+ */
+void timerRemove(timerHandler *timerToRemove)
+{
+    //begin from the list head
+    timerHandler *head = timerHead;
+    timerHandler *prev = NULL;
+    //goto the last node
+    while(head != NULL)
+    {
+        if(head->id == timerToRemove->id)
+        {
+            prev->next = head->next;
+            return;
+        }
+        else
+        {
+            prev = head;
+            head = head->next;
+        }
+    }
+}
 /* ----------------------------------------------------------------------------
  */
 /*!
@@ -26,114 +136,8 @@ static float currentTime;
 void SysTick_Handler(void)
 {
     HAL_IncTick();
-    currentTime=(HAL_GetTick());
-#warning "REWORK SysTick_Handler for SW interrupts"
-    currentTime /= (float)636.74694822;//converting ticks into seconds
-    static uint8_t counter = 0;
-    if(++counter == 200)
+    for(timerHandler *it = timerHead; it != NULL; it = it->next)
     {
-        HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
+        it->counter--;
     }
-}
-
-/* ----------------------------------------------------------------------------
- */
-/*!
- @brief         Initializes TIM3
-
- @param         None.
-
- @return        None. 
-*/
-/* ----------------------------------------------------------------------------
- */
-void timerInit(void)
-{
-    TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-    TIM_MasterConfigTypeDef sMasterConfig = {0};
-    TIM_IC_InitTypeDef sConfigIC = {0};
-    htim3.Instance = TIM3;
-    htim3.Init.Prescaler = 16000;
-    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim3.Init.Period = 0;
-    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-    if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-    if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    if (HAL_TIM_IC_Init(&htim3) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-    if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
-    sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-    sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-    sConfigIC.ICFilter = 15;
-    if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-    {
-        Error_Handler();
-    }
-}
-
-/* ----------------------------------------------------------------------------
- */
-/*!
- @brief         Initializes TIM3
-
- @param         None.
-
- @return        Status of the operation. 
-*/
-/* ----------------------------------------------------------------------------
- */
-HAL_StatusTypeDef timerStart(void)
-{
-	HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_Base_Start(&htim3);
-	return HAL_TIM_Base_Start_IT(&htim3);
-}
-
-
-/* ----------------------------------------------------------------------------
- */
-/*!
- @brief         Dumb function to print current time variable (maybe replace this function later)
-
- @param         None.
-
- @return        Status of operation
-*/
-/* ----------------------------------------------------------------------------
- */
-bool terminalTimerGetTime(uint8_t argc, char **argv)
-{
-    (void)argc;
-    (void)argv;
-    printf("Time from program start: %f\n", currentTime);
-    return true;
-}
-
-__attribute__((constructor))
-void terminalTimerInit(void)
-{
-  static commandStruct timerCommand = 
-  { 
-          .name = "time",
-          .description = "Returns time from program start. \n\n  time ",
-          .callback = terminalTimerGetTime,
-          .next = NULL 
-  };
-  terminalAddCommand(&timerCommand);
 }

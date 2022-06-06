@@ -32,6 +32,6 @@ typedef enum si7021Operations
   SI7021_READ_FIRMWARE_REV_L         = 0x84, // Read Firmware Revision
   SI7021_READ_FIRMWARE_REV_H         = 0xB8  //
 }si7021Operations;
-
+uint64_t si7021ReadId(void);
 
 #endif
