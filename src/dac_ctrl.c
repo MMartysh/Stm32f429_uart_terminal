@@ -14,10 +14,6 @@ DAC_HandleTypeDef hdac;
  */
 /*!
  @brief         Initializes DAC on channel 1
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -42,10 +38,6 @@ void dacInit(void)
  */
 /*!
  @brief         Starts DAC on channel 1
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -58,10 +50,6 @@ HAL_StatusTypeDef dacStart(void)
  */
 /*!
  @brief         Stops DAC on channel 1
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -75,9 +63,7 @@ HAL_StatusTypeDef dacStop(void)
 /*!
  @brief         Sets DAC signal value on channel 1
 
- @param[in]     p_fl_ValVolt desired DAC signal value.
-
- @return        None. 
+ @param[in]     voltage desired DAC signal value.
 */
 /* ----------------------------------------------------------------------------
  */
@@ -92,11 +78,7 @@ HAL_StatusTypeDef dacSetValue(uint32_t voltage)
  /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Starts ADC on channel 1
-
- @param         None.
-
- @return        None. 
+ @brief         Starts DAC on channel 1
 */
 /* ----------------------------------------------------------------------------
  */
@@ -110,7 +92,8 @@ uint32_t dacGetValue(void)
 /*!
  @brief         Generates voltage output
 
- @param         None.
+ @param[in]     argc nummber of arguments
+ @param[in]     argv arguments array
 
  @return        Status of operation
 */
@@ -120,14 +103,22 @@ bool terminalDacOutput(uint8_t argc, char **argv)
 {
     (void)argc;
     uint32_t valVolt;
-    strtol(argv[1], NULL, valVolt);
-    dacStart();
-    dacSetValue(valVolt);
+    if(!terminalGetInt(argv[1], &valVolt) || dacStart() != HAL_OK || dacSetValue(valVolt) != HAL_OK)
+    {
+        return false;
+    }
     printf("DAC value: %d\n", dacGetValue());
     dacStop();
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalDacInit(void)
 {

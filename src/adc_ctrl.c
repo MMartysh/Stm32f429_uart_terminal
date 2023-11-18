@@ -14,10 +14,6 @@ ADC_HandleTypeDef adcPeriphHandler;
  */
 /*!
  @brief         Initializes ADC1
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -54,10 +50,6 @@ void adcInit(void)
  */
 /*!
  @brief         Starts ADC on channel 1
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -70,10 +62,6 @@ void adcStart(void)
  */
 /*!
  @brief        Stops ADC on channel 1
-
- @param        None.
-
- @return       None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -108,9 +96,10 @@ uint32_t adcGetValue(uint32_t timeout)
 /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Return ADC value
+ @brief         ADC terminal command handler function
 
- @param         None.
+ @param[in]     argc nummber of arguments
+ @param[in]     argv arguments array
 
  @return        Status of operation
 */
@@ -120,11 +109,21 @@ bool terminalAdcGetValue(uint8_t argc, char **argv)
 {
     (void)argc;
     uint32_t timeout;
-    strtol(argv[1], NULL, timeout);
+    if(!terminalGetInt(argv[1], &timeout))
+    {
+        return false;
+    }
     printf("ADC value: %d\n", adcGetValue(timeout));
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalAdcInit(void)
 {

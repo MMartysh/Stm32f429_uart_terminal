@@ -11,6 +11,7 @@ typedef struct timerHandler
 }timerHandler;
 
 void timerInit(void);
+void timerDelayMs(uint32_t delayTime);
 void timerPerformCheck(void);
 void timerAdd(timerHandler *timerToAdd);
 void timerRemove(timerHandler *timerToRemove);

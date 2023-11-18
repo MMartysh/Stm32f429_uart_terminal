@@ -15,7 +15,7 @@ uint64_t si7021ReadId(void)
     uint64_t serialNum = 0;
     bool opStatus = true;
     uint16_t idRegReadCommand[] = {(SI7021_READ_ID1_L | (SI7021_READ_ID1_H << 8)),
-                                 (SI7021_READ_ID2_L | (SI7021_READ_ID2_H << 8))};
+                                   (SI7021_READ_ID2_L | (SI7021_READ_ID2_H << 8))};
     static const uint8_t transferSize = sizeof(idRegReadCommand) / sizeof(idRegReadCommand[0]);
     for(uint8_t i = 0; i < (sizeof(idRegReadCommand)/ sizeof(idRegReadCommand[0])); i++)
     {
@@ -36,10 +36,10 @@ uint64_t si7021ReadId(void)
 }
 
 
-static float si7021ReadTemperature(bool isMasterHold)
+float si7021ReadTemperature(bool isMasterHold)
 {
     uint8_t tempRegReadAddr;
-    if(isMasterHold)
+    if(!isMasterHold)
     {
         tempRegReadAddr = SI7021_TEMPERATURE_MASTER_NO_HOLD;
     }
@@ -47,22 +47,22 @@ static float si7021ReadTemperature(bool isMasterHold)
     {
         tempRegReadAddr = SI7021_TEMPERATURE_MASTER_HOLD;
     }
-    bool opStatus = !i2cWrite(SI7021_ADDRESS, &tempRegReadAddr, 1);
+    bool opStatus = i2cWrite(SI7021_ADDRESS, &tempRegReadAddr, 1);
 
     uint8_t temp[2];
-    opStatus &= i2cRead(SI7021_ADDRESS, temp, sizeof(temp));
+    opStatus = opStatus && i2cRead(SI7021_ADDRESS, temp, sizeof(temp));
     if(!opStatus)
     {
         return 0;
     }
 
-    return (175.72 * ((temp[0] << 8) | temp[1]) / 65536) - 46.85;
+    return (175.72 * ((float)((temp[0] << 8) | temp[1])) / 65536.0) - 46.85;
 }
 
 float si7021ReadHumidity(bool isMasterHold)
 {
     uint8_t tempRegReadAddr;
-    if(isMasterHold)
+    if(!isMasterHold)
     {
         tempRegReadAddr = SI7021_HUMIDITY_MASTER_HOLD;
     }
@@ -70,16 +70,16 @@ float si7021ReadHumidity(bool isMasterHold)
     {
         tempRegReadAddr = SI7021_HUMIDITY_MASTER_NO_HOLD;
     }
-    bool opStatus = !i2cWrite(SI7021_ADDRESS, &tempRegReadAddr, 1);
+    bool opStatus = i2cWrite(SI7021_ADDRESS, &tempRegReadAddr, 1);
 
     uint8_t humidity[2];
-    opStatus &= i2cRead(SI7021_ADDRESS, humidity, sizeof(humidity));
+    opStatus = opStatus && i2cRead(SI7021_ADDRESS, humidity, sizeof(humidity));
     if(!opStatus)
     {
         return 0;
     }
 
-    return ((125 * ((humidity[0] << 8) | humidity[1]) / 65536) - 6);
+    return ((125 * ((float)((humidity[0] << 8) | humidity[1])) / 65536.0) - 6.0);
 }
 
 bool si7021Reset(void)
@@ -137,7 +137,8 @@ bool si7021WriteResolution(uint8_t resolution)
 /*!
  @brief         Return ADC value
 
- @param         None.
+ @param[in]     argc nummber of arguments
+ @param[in]     argv arguments array
 
  @return        Status of operation
 */
@@ -159,15 +160,22 @@ bool terminalSi7021GetValue(uint8_t argc, char **argv)
     }
     else if(strcmp(argv[1], "id") == 0)
     {
-         printf("ID: %lld \n", si7021ReadId());
+         printf("ID: 0x%llx \n", si7021ReadId());
     }
     else if(strcmp(argv[1], "firmware") == 0)
     {
-         printf("Firmware rev: %d \n", si7021ReadFirmwareRevision());
+         printf("Firmware rev: 0x%x \n", si7021ReadFirmwareRevision());
     }
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalTempInit(void)
 {

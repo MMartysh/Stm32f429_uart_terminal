@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -39,8 +40,6 @@ static commandStruct *commandListHead = &helpCommand;
  @brief         Add command to the list
 
  @param[in]     command command struct to add
-
- @return        none
 */
 /* ----------------------------------------------------------------------------
  */
@@ -189,8 +188,6 @@ static bool terminalHelp(uint8_t argc, char **argv)
 
  @param[in]     argc number of command arguments
  @param[in]     argv command arguments
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -227,8 +224,6 @@ void terminalExecuteCommand(uint8_t argc, char **argv)
  @brief         Parses received string
 
  @param[in]     buf buffer containing the line to parse
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -251,10 +246,6 @@ void terminalParse(char *buf)
  */
 /*!
  @brief         Reads the line via UART bytewisely
-
- @param         None
-
- @return        None
 */
 /* ----------------------------------------------------------------------------
  */
@@ -288,4 +279,10 @@ void terminalGetChar(void)
     }
 }
 
+bool terminalGetInt(char *str, uint32_t *var)
+{
+    errno = 0;
+    *var = strtol(str, NULL, 10);
+    return (errno == ERANGE);
+}
 

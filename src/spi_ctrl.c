@@ -1,123 +1,130 @@
 #include "stm32f4xx_hal.h"
 #include "errorHandlers.h"
+#include "board.h"
 #include "spi_ctrl.h"
-#define SPI_TIMEOUT 50    /*Spi timeout duration*/
-#define SPI_READ    0x80	/*Accelerometer address*/
+#define SPI_NUMBER  6       /*Number of available SPI*/
+#define SPI_TIMEOUT 50      /*Spi timeout duration*/
+#define SPI_READ    0x80	/*SPI read flag*/
 //spi handler
-SPI_HandleTypeDef spiHandler;
-
+static struct
+{
+    SPI_HandleTypeDef handler;
+    GPIO_TypeDef *gpioPortHandle;
+    uint32_t gpioPinNumber;
+}
+spiCtrlData[] = 
+{
+    {{.Instance = SPI4}, GPIOE, GPIO_PIN_11},
+    {{.Instance = SPI5}, GPIOC, GPIO_PIN_1 },
+    {{.Instance = SPI5}, GPIOC, GPIO_PIN_2 }
+};
  /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Writes 1 byte of data via SPI5
+ @brief         Writes 1 byte of data via SPI
 
+ @param[in]     devNum device number, should be of type csDeviceName.
  @param[in]     address register address to write to.
  @param[in]     data data to be written.
 
- @return        None. 
+ @return        Status of operation. 
 */
 /* ----------------------------------------------------------------------------
  */
-void spiWriteByte(uint8_t address, uint8_t data)
+HAL_StatusTypeDef spiWriteByte(uint8_t devNum, uint8_t address, uint8_t data)
 {
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
-    HAL_SPI_Transmit(&spiHandler, &address, 1, SPI_TIMEOUT);
-    HAL_SPI_Transmit(&spiHandler, &data, 1, SPI_TIMEOUT);
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
+    if(devNum > SPI_CTRL_DEV_MAX_NUM)
+    {
+        return HAL_ERROR;
+    }
+    uint8_t txVal[] = {address, data};
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_RESET); //CS --> Low
+    HAL_StatusTypeDef retVal = HAL_SPI_Transmit(&spiCtrlData[devNum].handler, txVal, 2, SPI_TIMEOUT);
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_SET); //CS --> High
+    return retVal;
 } 
 
 
  /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Reads 1 byte of data via SPI5
+ @brief         Reads 1 byte of data via SPI
 
+ @param[in]     devNum device number, should be of type csDeviceName.
  @param[in]     address register address to read from.
+ @param[out]    data data to be read.
 
- @return        One byte of data from given register. 
+ @return        Status of operation. 
 */
 /* ----------------------------------------------------------------------------
  */
-uint8_t spiReadByte(uint8_t address)
+HAL_StatusTypeDef spiReadByte(uint8_t devNum, uint8_t address, uint8_t *data)
 {
-	uint8_t data;
+    if(devNum > SPI_CTRL_DEV_MAX_NUM)
+    {
+        return HAL_ERROR;
+    }
 	address = address | SPI_READ;
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //CS --> Low
-	HAL_SPI_Transmit(&spiHandler, &address,1,SPI_TIMEOUT);
-	HAL_SPI_Receive(&spiHandler, &data,1,SPI_TIMEOUT);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET); //CS --> High
-	return data;
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_RESET); //CS --> Low
+    HAL_StatusTypeDef retVal = HAL_SPI_TransmitReceive(&spiCtrlData[devNum].handler, &address, data, 1, SPI_TIMEOUT);
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_SET); //CS --> High
+    return retVal;
 }
 
  /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Initializes SPI5
+ @brief         Perform SPI data transfer
 
- @param         None.
+ @param[in]     devNum device number, should be of type csDeviceName.
+ @param[out]    rxData vuffer to store received data to.
+ @param[in]     txData data to be transferred.
+ @param[in]     size transfer size.
 
- @return        None. 
+ @return        Status of operation. 
 */
 /* ----------------------------------------------------------------------------
  */
-void spiInit(void)
+HAL_StatusTypeDef spiTransfer(uint8_t devNum, uint8_t *rxData, uint8_t *txData, uint32_t size)
 {
-    TIM_HandleTypeDef htim3;
-    TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-    TIM_MasterConfigTypeDef sMasterConfig = {0};
-    TIM_IC_InitTypeDef sConfigIC = {0};
-    htim3.Instance = TIM3;
-    htim3.Init.Prescaler = 16000;
-    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim3.Init.Period = 0;
-    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-    if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+    if(devNum > SPI_CTRL_DEV_MAX_NUM)
     {
-        Error_Handler();
+        return HAL_ERROR;
     }
-    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-    if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_RESET); //CS --> Low
+    HAL_StatusTypeDef retVal = HAL_SPI_TransmitReceive(&spiCtrlData[devNum].handler, txData, rxData, size, SPI_TIMEOUT);
+    HAL_GPIO_WritePin(spiCtrlData[devNum].gpioPortHandle, spiCtrlData[devNum].gpioPinNumber, GPIO_PIN_SET); //CS --> High
+    return retVal;
+}
+ /* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Initializes SPI peripheral
+*/
+/* ----------------------------------------------------------------------------
+ */
+HAL_StatusTypeDef spiInit(uint8_t devNum)
+{
+    if(devNum > SPI_CTRL_DEV_MAX_NUM)
     {
-        Error_Handler();
+        return HAL_ERROR;
     }
-    if (HAL_TIM_IC_Init(&htim3) != HAL_OK)
+    SPI_InitTypeDef spiInit = 
     {
-        Error_Handler();
-    }
-    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-    if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
-    sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-    sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-    sConfigIC.ICFilter = 15;
-    if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-    {
-    Error_Handler();
-    }
-    spiHandler.Instance = SPI5;
-    spiHandler.Init.Mode = SPI_MODE_MASTER;
-    spiHandler.Init.Direction = SPI_DIRECTION_2LINES;
-    spiHandler.Init.DataSize = SPI_DATASIZE_8BIT;
-    spiHandler.Init.CLKPolarity = SPI_POLARITY_LOW;
-    spiHandler.Init.CLKPhase = SPI_PHASE_1EDGE;
-    spiHandler.Init.NSS = SPI_NSS_SOFT;
-    spiHandler.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
-    spiHandler.Init.FirstBit = SPI_FIRSTBIT_MSB;
-    spiHandler.Init.TIMode = SPI_TIMODE_DISABLE;
-    spiHandler.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-    spiHandler.Init.CRCPolynomial = 10;
-    if (HAL_SPI_Init(&spiHandler) != HAL_OK)
-    {
-        Error_Handler();
-    }
-    HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_Base_Start(&htim3);
-	HAL_TIM_Base_Start_IT(&htim3);
+        .BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16, //SPI_BAUDRATEPRESCALER_8 for MAX7219?
+        .Direction         = SPI_DIRECTION_2LINES,
+        .CLKPhase          = SPI_PHASE_1EDGE,
+        .CLKPolarity       = SPI_POLARITY_LOW,
+        .DataSize          = SPI_DATASIZE_8BIT,
+        .FirstBit          = SPI_FIRSTBIT_MSB,
+        .TIMode            = SPI_TIMODE_DISABLE,
+        .CRCCalculation    = SPI_CRCCALCULATION_DISABLE,
+        .CRCPolynomial     = 10,
+        .NSS               = SPI_NSS_SOFT,
+        .Mode              = SPI_MODE_MASTER,
+    };
+    spiCtrlData[devNum].handler.Init = spiInit;
+    return HAL_SPI_Init(&spiCtrlData[devNum].handler);
 }
 
 

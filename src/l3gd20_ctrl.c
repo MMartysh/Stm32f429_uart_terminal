@@ -10,38 +10,30 @@
  */
 /*!
  @brief         Configs L3GD20 control registers
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
 void l3gd20Init(void)
 {
-    spiWriteByte(L3GD20_CTRL_REG1_ADDR, 0x0F);
+    spiWriteByte(5, L3GD20_CTRL_REG1_ADDR, 0x0F);
 }
 
 /* ----------------------------------------------------------------------------
  */
 /*!
  @brief         Deinitializes L3GD20
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
 void l3gd20DeInit(void)
 {
-    spiWriteByte(L3GD20_CTRL_REG1_ADDR, 0x07);
+    spiWriteByte(5, L3GD20_CTRL_REG1_ADDR, 0x07);
 }
 
 /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Deinitializes L3GD20
+ @brief         Get axis register address
 
  @param[in]     axisNum X, Y or Z axis, can be: 
                     L3GD20_X_AXIS,
@@ -49,7 +41,7 @@ void l3gd20DeInit(void)
                     L3GD20_Z_AXIS
  @param[in]     isHighNumberPart is H or L register
 
- @return        None. 
+ @return        Axis register address. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -88,8 +80,8 @@ float l3gd20GetAxisAngularRate(uint8_t axisNum, float sensitivity)
 	uint8_t axisDataL;
 	int16_t regRawData;
 
-	axisDataL = spiReadByte(l3gd20GetAxis(axisNum, false));
-	axisDataH = spiReadByte(l3gd20GetAxis(axisNum, true));
+	spiReadByte(5, l3gd20GetAxis(axisNum, false), &axisDataL);
+	spiReadByte(5, l3gd20GetAxis(axisNum, true), &axisDataH);
 	
 	regRawData = (int16_t)( (uint16_t)(axisDataH << 8) + axisDataL);
 	return (float)(regRawData / sensitivity);
@@ -99,8 +91,6 @@ float l3gd20GetAxisAngularRate(uint8_t axisNum, float sensitivity)
  */
 /*!
  @brief         Return ADC value
-
- @param         None.
 
  @return        Status of operation
 */
@@ -124,6 +114,13 @@ bool terminalAccelerometerGetValue(uint8_t argc, char **argv)
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalAccInit(void)
 {

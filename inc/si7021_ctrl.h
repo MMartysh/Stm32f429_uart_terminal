@@ -33,5 +33,6 @@ typedef enum si7021Operations
   SI7021_READ_FIRMWARE_REV_H         = 0xB8  //
 }si7021Operations;
 uint64_t si7021ReadId(void);
-
+float si7021ReadTemperature(bool isMasterHold);
+bool si7021WriteResolution(uint8_t resolution);
 #endif

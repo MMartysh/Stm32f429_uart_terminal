@@ -10,11 +10,7 @@
  /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Initializes clocks for GPIO ports and sets up settings for PC1 pin
-
- @param         None.
-
- @return        None. 
+ @brief         Initialize clocks for GPIO ports
 */
 /* ----------------------------------------------------------------------------
  */
@@ -29,12 +25,14 @@ void gpioInit(void)
     __HAL_RCC_GPIOG_CLK_ENABLE();
     __HAL_RCC_GPIOH_CLK_ENABLE();
 }
+
 /* ----------------------------------------------------------------------------
  */
 /*!
- @brief         Return ADC value
+ @brief         GPIO terminal command handler function
 
- @param         None.
+ @param[in]     argc nummber of arguments
+ @param[in]     argv arguments array
 
  @return        Status of operation
 */
@@ -50,12 +48,8 @@ bool terminalGpio(uint8_t argc, char **argv)
         GPIOA, GPIOB, GPIOC, GPIOD,
         GPIOE, GPIOF, GPIOG, GPIOH
     };
-    if(strtol(argv[1], NULL, pinNumber) == 0)
-    {
-        printf("Invalid argument\n");
-        return false;
-    }
-    if(strlen(argv[2]) > 1)
+
+    if(!terminalGetInt(argv[1], &pinNumber) || strlen(argv[2]) > 1)
     {
         printf("Invalid argument\n");
         return false;
@@ -77,6 +71,13 @@ bool terminalGpio(uint8_t argc, char **argv)
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalGpioInit(void)
 {

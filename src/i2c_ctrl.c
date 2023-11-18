@@ -6,6 +6,11 @@
 #define I2C_COMMUNICATION_TIMEOUT 100
 
 static I2C_HandleTypeDef i2cHandle;
+
+I2C_HandleTypeDef *i2cGetHandle(void)
+{
+    return &i2cHandle;
+}
  /* ----------------------------------------------------------------------------
  */
 /*!
@@ -55,10 +60,6 @@ bool i2cRead(uint16_t address, uint8_t *data, uint16_t size)
  */
 /*!
  @brief         Initializes I2C peripheral
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */

@@ -20,10 +20,6 @@ TIM_OC_InitTypeDef sConfigOC = {0};
  */
 /*!
  @brief         Initializes clocks for GPIO ports and sets up settings for PC1 pin
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -87,7 +83,7 @@ void pwmInit(void)
 /*!
  @brief         Starts PWM on Channel 1 with given duty cycle
 
- @param[in]     p_ui_DutyCycle PWM duty cycle in percents 
+ @param[in]     dutyCycle PWM duty cycle in percents 
 
  @return        None. 
 */
@@ -103,10 +99,6 @@ void pwmStart(uint32_t dutyCycle)
  */
 /*!
  @brief         Stops PWM on Channel 1 
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -120,7 +112,8 @@ void pwmStop(void)
 /*!
  @brief         Return ADC value
 
- @param         None.
+ @param[in]     argc nummber of arguments
+ @param[in]     argv arguments array
 
  @return        Status of operation
 */
@@ -151,6 +144,13 @@ bool terminalPwmGenerateOutput(uint8_t argc, char **argv)
     return true;
 }
 
+/* ----------------------------------------------------------------------------
+ */
+/*!
+ @brief         Add terminal command handle to list
+*/
+/* ----------------------------------------------------------------------------
+ */
 __attribute__((constructor))
 void terminalPwmInit(void)
 {

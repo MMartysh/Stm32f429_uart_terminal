@@ -6,10 +6,6 @@
  */
 /*!
  @brief         Set up configs for chip clocks
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */

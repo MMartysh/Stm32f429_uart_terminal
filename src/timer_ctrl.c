@@ -7,6 +7,7 @@
 
 #define SYSTEM_CLK_DIVIDER 1600
 static timerHandler *timerHead;
+static uint32_t delayCounter = 0;
 void timerInit(void)
 {
     SysTick_Config(SystemCoreClock / SYSTEM_CLK_DIVIDER);
@@ -15,10 +16,6 @@ void timerInit(void)
  */
 /*!
  @brief         Do the counter check and call the timer function
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -59,8 +56,6 @@ void timerPerformCheck(void)
  @brief         Do the counter check and call the timer function
 
  @param[in]     timerToAdd timer handler to apeend to the list
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -97,8 +92,6 @@ void timerAdd(timerHandler *timerToAdd)
  @brief         Remove timer from list
 
  @param[in]     timerToRemove timer handler to remove from list.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
@@ -126,18 +119,21 @@ void timerRemove(timerHandler *timerToRemove)
  */
 /*!
  @brief         Interrupt handler
-
- @param         None.
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
 void SysTick_Handler(void)
 {
     HAL_IncTick();
+    if(delayCounter != 0){delayCounter--;}
     for(timerHandler *it = timerHead; it != NULL; it = it->next)
     {
         it->counter--;
     }
+}
+
+void timerDelayMs(uint32_t delayTime)
+{
+    delayCounter = delayTime;
+    while(delayCounter != 0);
 }
