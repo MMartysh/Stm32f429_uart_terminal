@@ -16,7 +16,7 @@ void Error_Handler(void)
 {
 	while(1)
 	{
-    HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
-    HAL_Delay(1000);
+        HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
+        HAL_Delay(1000);
 	}
 }

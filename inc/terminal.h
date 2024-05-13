@@ -20,5 +20,5 @@ void terminalParse(char *buf);
 void terminalGetChar(void);
 void terminalInit(void);
 void terminalAddCommand (commandStruct *command);
-
+bool terminalGetInt(char *str, uint32_t *var);
 #endif

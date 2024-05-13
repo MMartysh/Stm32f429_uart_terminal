@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -39,8 +40,6 @@ static commandStruct *commandListHead = &helpCommand;
  @brief         Add command to the list
 
  @param[in]     command command struct to add
-
- @return        none
 */
 /* ----------------------------------------------------------------------------
  */
@@ -189,37 +188,34 @@ static bool terminalHelp(uint8_t argc, char **argv)
 
  @param[in]     argc number of command arguments
  @param[in]     argv command arguments
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
 void terminalExecuteCommand(uint8_t argc, char **argv)
 {
-  //searching command
-  commandStruct *commandToExecute = terminalFindCommand ( argv[0]);
-  static bool commandInProgress = false;
-  //if command was not found
-  if(commandToExecute == NULL)
-  {
-      printf("Command not found: %s \n", argv[0]);
-      return;
-  }
-  if(commandToExecute->callback == NULL) 
-  {
-      printf("Callback function does not exist! \n");
-      return;
-  }
-  static const commandStruct *commandInProgressPointer = NULL;
+    //searching command
+    commandStruct *commandToExecute = terminalFindCommand ( argv[0]);
+    static bool commandInProgress = false;
+    //if command was not found
+    if(commandToExecute == NULL)
+    {
+        printf("Command not found: %s \n", argv[0]);
+        return;
+    }
+    if(commandToExecute->callback == NULL) 
+    {
+        printf("Callback function does not exist! \n");
+        return;
+    }
+    static const commandStruct *commandInProgressPointer = NULL;
 
-  if((commandToExecute != commandInProgressPointer) && commandInProgress)
-  {
-    printf("Other command currently ongoing, stop command and try again\n");
-    return;
-
-  }
-  commandInProgress = false;
-  bool prevCommandStatus = commandToExecute->callback(argc, argv);
+    if((commandToExecute != commandInProgressPointer) && commandInProgress)
+    {
+        printf("Other command currently ongoing, stop command and try again\n");
+        return;
+    }
+    commandInProgress = false;
+    bool prevCommandStatus = commandToExecute->callback(argc, argv);
 }
 
 /* ----------------------------------------------------------------------------
@@ -228,65 +224,65 @@ void terminalExecuteCommand(uint8_t argc, char **argv)
  @brief         Parses received string
 
  @param[in]     buf buffer containing the line to parse
-
- @return        None. 
 */
 /* ----------------------------------------------------------------------------
  */
 void terminalParse(char *buf)
 {
-  static char *argument[MAX_ARGUMENTS_NUMBER];
-  uint8_t argNum = 0;
-   // operation must be a first token
-  char *arg = strtok(buf, " \t\n\r");
-  // cycle until there is no available tokens
-  while(arg != NULL)
-  {
-     // Copying arguments
-    argument[argNum++] = arg;
-    arg = strtok (NULL, " \t\n\r");
-  }
-  terminalExecuteCommand (argNum, argument);
+    static char *argument[MAX_ARGUMENTS_NUMBER];
+    uint8_t argNum = 0;
+    // operation must be a first token
+    char *arg = strtok(buf, " \t\n\r");
+    // cycle until there is no available tokens
+    while(arg != NULL)
+    {
+         // Copying arguments
+        argument[argNum++] = arg;
+        arg = strtok (NULL, " \t\n\r");
+    }
+    terminalExecuteCommand (argNum, argument);
 }
 /* ----------------------------------------------------------------------------
  */
 /*!
  @brief         Reads the line via UART bytewisely
-
- @param         None
-
- @return        None
 */
 /* ----------------------------------------------------------------------------
  */
 void terminalGetChar(void)
 {
-  static uint32_t charCount = 0;
-  static uint8_t buffer[MAX_STRING_LENGTH] = {0};
-  int32_t recChar;
-  if(( recChar = getchar()) == EOF)
-  {
-    return;
-  }
-  if((char)recChar == '\r')
-  {
-    // Command received
-    // changing CR or LF symbol on EOL symbol to ensure correct work of string
-    // functions
-    buffer[charCount] = '\0';
-    // resetting counter
-    charCount = 0;
-    // resetting counter
-    terminalParse((char*)buffer);
-  }
-  else if(isprint(recChar))
-  {
-    buffer[charCount++] = (char)recChar;
-  }
-  if(charCount >= MAX_STRING_LENGTH)
-  {
-    charCount = MAX_STRING_LENGTH - 2;
-  }
+    static uint32_t charCount = 0;
+    static uint8_t buffer[MAX_STRING_LENGTH] = {0};
+    int32_t recChar;
+    if(( recChar = getchar()) == EOF)
+    {
+        return;
+    }
+    if((char)recChar == '\r')
+    {
+        // Command received
+        // changing CR or LF symbol on EOL symbol to ensure correct work of string
+        // functions
+        buffer[charCount] = '\0';
+        // resetting counter
+        charCount = 0;
+        // resetting counter
+        terminalParse((char*)buffer);
+    }
+    else if(isprint(recChar))
+    {
+        buffer[charCount++] = (char)recChar;
+    }
+    if(charCount >= MAX_STRING_LENGTH)
+    {
+        charCount = MAX_STRING_LENGTH - 2;
+    }
 }
 
+bool terminalGetInt(char *str, uint32_t *var)
+{
+    errno = 0;
+    *var = strtol(str, NULL, 10);
+    return (errno == ERANGE);
+}
 
