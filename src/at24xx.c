@@ -274,8 +274,10 @@ static uint32_t eepromWrite(uint8_t argc, char **argv)
     {
         return false;
     }
+    // while there is data to write
     while(testData.size > 0)
     {
+        // transfer data that is left
         if(testData.size <= amount)
         {
             amount = testData.size;
@@ -289,6 +291,7 @@ static uint32_t eepromWrite(uint8_t argc, char **argv)
                 printf("Cannot convert %s to number\n", argv[(i + 3) + bytesWritten]);
                 return false;
             }
+            // data is passed as bytes, so this conversion should be fine
             buff[i] = (uint8_t)tmp;
         }
         // Write data
@@ -329,6 +332,7 @@ static bool terminalEeprom (uint8_t argc, char **argv)
         printf("Cannot convert %s to number\n", argv[2]);
         return false;
     }
+    
     if(strcmp(argv[1], "read") == 0)
     {
         uint32_t dataSize;
